@@ -7,7 +7,7 @@ It is still under development.
 
 ## Prequisists
 
-* MySQL 
+* MongoDB
 * JAVA 8
 * Maven
 
