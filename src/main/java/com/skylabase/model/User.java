@@ -1,39 +1,19 @@
 package com.skylabase.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
 
-import org.hibernate.annotations.GenericGenerator;
-
-@Entity
-@Table(name = "users")
 public class User {
 
-	private long userId;
+	@Id
+	private String id;
 	private String username;
 	private String email;
-	private String phoneNumber;
+	private String phoneNumber; 
 	private String city;
 	private String country;
 	
 	public User() {}
 
-	@Id
-	@Column(name = "user_id")
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name="increment", strategy = "increment")
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	@Column(name = "username")
 	public String getUsername() {
 		return username;
 	}
@@ -50,7 +30,6 @@ public class User {
 		this.email = email;
 	}
 
-	@Column(name = "phone_number")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -73,5 +52,13 @@ public class User {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }
