@@ -31,8 +31,7 @@ class UserServiceImpl implements UserService {
 
 	@Override
 	public User update(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return create(user);
 	}
 
 	@Override
@@ -40,4 +39,13 @@ class UserServiceImpl implements UserService {
 		userRepository.delete(user);
 	}
 
+	@Override
+	public boolean userExists(User user) {
+		return userRepository.exists(user.getId());
+	}
+
+	@Override
+	public void deleteAll() {
+		userRepository.deleteAll();
+	}
 }
