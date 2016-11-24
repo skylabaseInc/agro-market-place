@@ -3,11 +3,17 @@ package com.skylabase.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 import com.skylabase.model.User;
 import com.skylabase.service.UserService;
 
+/**
+ * Implementation of {@link UserService}
+ * 
+ * @author ivange
+ */
 @Service
 class UserServiceImpl implements UserService {
 
@@ -49,3 +55,13 @@ class UserServiceImpl implements UserService {
 		userRepository.deleteAll();
 	}
 }
+
+/**
+ * Repository used by UserService to access database.
+ * 
+ * @author ivange
+ */
+interface UserRepository extends MongoRepository<User, String> {
+
+}
+
