@@ -29,25 +29,6 @@ public class FarmRestController {
 	private FarmService farmService;
 
 	/**
-	 * Get a list of all farms in the system.
-	 * 
-	 * @return the list of farms
-	 * 
-	 * @see FarmService#findAll()
-	 */
-	@RequestMapping(method = RequestMethod.GET)
-	@ApiOperation(value = "Get farms", notes = "Returns a list of all farms.")
-	public ResponseEntity<List<Farm>> getFarms() {
-		List<Farm> farms = farmService.findAll();
-
-		if (farms == null) {
-			return new ResponseEntity<List<Farm>>(HttpStatus.NOT_FOUND);
-		}
-		
-		return new ResponseEntity<List<Farm>>(farms, HttpStatus.OK);
-	}
-
-	/**
 	 * Get Farm with given farm id.
 	 * 
 	 * @param id
@@ -66,11 +47,17 @@ public class FarmRestController {
 		return new ResponseEntity<Farm>(farm, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, params = { "ownerId" })
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Search farms by owner", notes = "Returns a list of farms belonging to owner")
-	public ResponseEntity<List<Farm>> getFarmsByOwner(@RequestParam("ownerId") String ownerId) {
-		final List<Farm> farms = farmService.findByOwnerId(ownerId);
+	public ResponseEntity<List<Farm>> getFarms(@RequestParam(value = "ownerId", required = false) String ownerId) {
+		List<Farm> farms= null;
 		
+		if (ownerId == null) {
+			farms = farmService.findAll();
+		}
+		else {
+			farms = farmService.findByOwnerId(ownerId);
+		}
 		if (farms == null) {
 			return new ResponseEntity<List<Farm>>(HttpStatus.NOT_FOUND);
 		}
