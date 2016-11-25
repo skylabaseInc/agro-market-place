@@ -4,6 +4,7 @@ import com.skylabase.model.Category;
 import com.skylabase.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,10 @@ class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(String id) {
         return categoryRepository.findOne(id);
+    }
+
+    public List<Category> findByName(String name) {
+        return categoryRepository.findByName(name);
     }
 
     @Override
@@ -41,7 +46,7 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean exists(Category category) {
-        if(category.getId() == null) {
+        if (category.getId() == null) {
             return false;
         }
         return categoryRepository.exists(category.getId());
@@ -54,4 +59,6 @@ class CategoryServiceImpl implements CategoryService {
 }
 
 interface CategoryRepository extends MongoRepository<Category, String> {
+
+    List<Category> findByName(@Param("name") String name);
 }

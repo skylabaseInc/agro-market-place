@@ -19,17 +19,10 @@ public class CategoryRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getCategories(@RequestParam(value = "name", defaultValue = "") String name) {
-        List<Category> categories = categoryService.findAll();
-        if (categories == null) {
+        if (categoryService.findAll() == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        List<Category> returnValue = new ArrayList<>();
-        for (Category category : categories) {
-            if (category.getName().contains(name)) {
-                returnValue.add(category);
-            }
-        }
-        return new ResponseEntity<>(returnValue, HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.findByName(name), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -50,7 +43,7 @@ public class CategoryRestController {
         return new ResponseEntity<Category>(created, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Category> updateCategory(@PathVariable("id") String id, @RequestBody Category category) {
         final Category existing = categoryService.findById(id);
         if (existing == null) {
@@ -62,7 +55,7 @@ public class CategoryRestController {
         return new ResponseEntity<Category>(category, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteCategory(@PathVariable("id") String id) {
         final Category category = categoryService.findById(id);
         if (category == null) {
@@ -72,7 +65,7 @@ public class CategoryRestController {
         return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteAllCategories() {
         categoryService.deleteAll();
         return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
