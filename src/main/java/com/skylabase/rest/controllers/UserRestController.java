@@ -77,16 +77,15 @@ public class UserRestController {
 	 * @see UserService#create(User)
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createUser(@RequestBody User user) {
-		if (userService.userExists(user)) {
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+	public ResponseEntity<User> createUser(@RequestBody User user) {
+		if (userService.exists(user)) {
+			return new ResponseEntity<User>(HttpStatus.CONFLICT);
 		}
 
 		userService.create(user);
 		HttpHeaders headers = new HttpHeaders();
-		 headers.setLocation(ServletUriComponentsBuilder
-			      .fromCurrentRequest().path("/").buildAndExpand("").toUri());
-		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+		headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
+		return new ResponseEntity<User>(headers, HttpStatus.CREATED);
 	}
 
 	/**

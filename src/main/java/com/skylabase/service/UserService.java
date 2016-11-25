@@ -8,6 +8,7 @@ import com.skylabase.model.User;
  * Service that provides CRUD operations for {@link User}
  * 
  * @see User
+ * 
  * @author ivange
  */
 public interface UserService {
@@ -56,7 +57,7 @@ public interface UserService {
 	 * @param user the user been checked for existence
 	 * @return true if user exist else false
 	 */
-	public boolean userExists(User user);
+	public boolean exists(User user);
 
 	/**
 	 * Delete all users from the system.
