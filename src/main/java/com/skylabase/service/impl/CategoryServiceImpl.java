@@ -4,9 +4,11 @@ import com.skylabase.model.Category;
 import com.skylabase.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -39,6 +41,9 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean exists(Category category) {
+        if(category.getId() == null) {
+            return false;
+        }
         return categoryRepository.exists(category.getId());
     }
 
