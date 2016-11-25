@@ -20,10 +20,9 @@ import com.skylabase.service.OrderService;
 /**
  * RestController that handles request for {@link Order} objects
  *
+ * @author faison
  * @see Order
  * @see OrderService
- *
- * @author faison
  */
 @RestController
 @RequestMapping("/orders")
@@ -50,10 +49,8 @@ public class OrderRestController {
     /**
      * Get order with given order id.
      *
-     * @param id
-     *            the id of the order to return
+     * @param id the id of the order to return
      * @return the order of given id
-     *
      * @see OrderService#findById(String)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -68,8 +65,7 @@ public class OrderRestController {
     /**
      * Create a new order in the system.
      *
-     * @param order
-     *            the order to be created
+     * @param order the order to be created
      * @param order
      * @return an HttpStatus.CREATED if order was successfully created
      */
@@ -88,12 +84,10 @@ public class OrderRestController {
     /**
      * Updates an existing order.
      *
-     * @param id
-     *            the id of the order been updated
-     * @param updated
-     *            an updated instance to persist
+     * @param id      the id of the order been updated
+     * @param updated an updated instance to persist
      * @return the updated order or an HttpStatus.NOT_FOUND if the order been
-     *         updated does not exist
+     * updated does not exist
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order updated) {
@@ -114,10 +108,9 @@ public class OrderRestController {
     /**
      * Deletes a order from the system.
      *
-     * @param id
-     *            the id of the order been deleted
+     * @param id the id of the order been deleted
      * @return if order was not found an HttpStatus.NOT_FOUND is returned else an
-     *         HttpStatus.NO_CONTENT is returned
+     * HttpStatus.NO_CONTENT is returned
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Order> deleteOrder(@PathVariable("id") String id) {
@@ -134,7 +127,6 @@ public class OrderRestController {
      * Deletes all orders from the system
      *
      * @return an HttpStatus.NO_CONTENT
-     *
      * @see OrderService#deleteAll()
      */
     @RequestMapping(method = RequestMethod.DELETE)
