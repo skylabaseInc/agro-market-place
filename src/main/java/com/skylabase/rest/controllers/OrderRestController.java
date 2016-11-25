@@ -74,8 +74,7 @@ public class OrderRestController {
         if (orderService.exists(order)) {
             return new ResponseEntity<Order>(HttpStatus.CONFLICT);
         }
-
-        orderService.create(order);
+        final Order created = orderService.create(order);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
         return new ResponseEntity<Order>(headers, HttpStatus.CREATED);
