@@ -1,6 +1,8 @@
 package com.skylabase.service.impl;
 
+import com.skylabase.model.Farm;
 import com.skylabase.model.Product;
+import com.skylabase.service.FarmService;
 import com.skylabase.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -13,6 +15,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private FarmService farmService;
+
     /**
      * Get an element of type T with given id.
      *
@@ -42,6 +48,11 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product create(Product instance) {
+        Farm sourceFarm = farmService.findById(instance.getFarm_id());
+        if (sourceFarm == null) {
+            // Should throw exception: No Farm With Such an Id.
+            return null;
+        }
         return productRepository.save(instance);
     }
 
