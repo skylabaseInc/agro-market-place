@@ -20,7 +20,7 @@ public class CategoryRestController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getCategories(@RequestParam(value = "name", defaultValue = "") String name) {
         List<Category> categories = categoryService.findAll();
-        if (categories == null || categories.isEmpty()) {
+        if (categories == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         List<Category> returnValue = new ArrayList<>();
@@ -28,9 +28,6 @@ public class CategoryRestController {
             if (category.getName().contains(name)) {
                 returnValue.add(category);
             }
-        }
-        if (returnValue.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(returnValue, HttpStatus.OK);
     }
