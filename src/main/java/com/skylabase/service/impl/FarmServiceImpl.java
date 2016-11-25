@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.skylabase.model.Farm;
@@ -59,6 +60,11 @@ class FarmServiceImpl implements FarmService {
 	public void deleteAll() {
 		farmRepository.deleteAll();
 	}
+
+	@Override
+	public List<Farm> findByOwnerId(String ownerId) {
+		return farmRepository.findByOwnerId(ownerId);
+	}
 }
 
 /**
@@ -68,4 +74,5 @@ class FarmServiceImpl implements FarmService {
  */
 interface FarmRepository extends MongoRepository<Farm, String> {
 	
+	List<Farm> findByOwnerId(@Param("ownerId") String ownerId);
 }

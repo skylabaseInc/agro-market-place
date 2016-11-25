@@ -67,7 +67,7 @@ public class FarmerRestController {
 	}
 	
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<Farmer> deleteUser(@PathVariable("id") String id) {
+	public ResponseEntity<Farmer> deleteFarmer(@PathVariable("id") String id) {
 		final Farmer farmer = farmerService.findById(id);
 		if (farmer == null) {
 			return new ResponseEntity<Farmer>(HttpStatus.NOT_FOUND);
@@ -77,7 +77,7 @@ public class FarmerRestController {
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE)
-	public ResponseEntity<Farmer> deleteAllUsers() {
+	public ResponseEntity<Farmer> deleteAllFarmers() {
 		farmerService.deleteAll();
 		return new ResponseEntity<Farmer>(HttpStatus.NO_CONTENT);
 	}

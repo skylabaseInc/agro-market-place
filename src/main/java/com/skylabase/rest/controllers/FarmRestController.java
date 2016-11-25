@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,10 +20,10 @@ import com.skylabase.service.FarmService;
 @RestController
 @RequestMapping("/farms")
 public class FarmRestController {
-	
+
 	@Autowired
 	private FarmService farmService;
-	
+
 	/**
 	 * Get a list of all farms in the system.
 	 * 
@@ -34,9 +35,10 @@ public class FarmRestController {
 	public ResponseEntity<List<Farm>> getFarms() {
 		List<Farm> farms = farmService.findAll();
 
-		if (farms.isEmpty()) {
-			return new ResponseEntity<List<Farm>>(HttpStatus.NO_CONTENT);
+		if (farms == null) {
+			return new ResponseEntity<List<Farm>>(HttpStatus.NOT_FOUND);
 		}
+		
 		return new ResponseEntity<List<Farm>>(farms, HttpStatus.OK);
 	}
 
@@ -51,11 +53,21 @@ public class FarmRestController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Farm> getFarm(@PathVariable("id") String id) {
-		Farm farm = farmService.findById(id);
+		final Farm farm = farmService.findById(id);
 		if (farm == null) {
 			return new ResponseEntity<Farm>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Farm>(farm, HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, params = { "ownerId" })
+	public ResponseEntity<List<Farm>> getFarmsByOwner(@RequestParam("ownerId") String ownerId) {
+		final List<Farm> farms = farmService.findByOwnerId(ownerId);
+		
+		if (farms == null) {
+			return new ResponseEntity<List<Farm>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Farm>>(farms, HttpStatus.OK);
 	}
 
 	/**
@@ -75,8 +87,7 @@ public class FarmRestController {
 
 		Farm created = farmService.create(farm);
 		HttpHeaders headers = new HttpHeaders();
-		 headers.setLocation(ServletUriComponentsBuilder
-			      .fromCurrentRequest().path("/").buildAndExpand("").toUri());
+		headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
 		return new ResponseEntity<Farm>(created, headers, HttpStatus.CREATED);
 	}
 
@@ -105,7 +116,7 @@ public class FarmRestController {
 		currentFarm.setLocationId(updated.getLocationId());
 		currentFarm.setOwnerId(updated.getOwnerId());
 		currentFarm.setProducts(updated.getProducts());
-		
+
 		return new ResponseEntity<Farm>(currentFarm, HttpStatus.OK);
 	}
 
