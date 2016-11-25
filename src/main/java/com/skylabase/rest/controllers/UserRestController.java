@@ -16,6 +16,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.skylabase.model.User;
 import com.skylabase.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * RestController that handles request for {@link User} objects
  *
@@ -26,6 +29,7 @@ import com.skylabase.service.UserService;
  */
 @RestController
 @RequestMapping("/users")
+@Api(value="User")
 public class UserRestController {
 
 	@Autowired
@@ -39,6 +43,7 @@ public class UserRestController {
 	 * @see UserService#findAll()
 	 */
 	@RequestMapping(method = RequestMethod.GET)
+	@ApiOperation(value = "Get users", notes = "Returns a list of all users.")
 	public ResponseEntity<List<User>> getUsers() {
 		List<User> users = userService.findAll();
 
@@ -58,6 +63,7 @@ public class UserRestController {
 	 * @see UserService#findById(String)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a particular user", notes = "Returns a particular user.")
 	public ResponseEntity<User> getUser(@PathVariable("id") String id) {
 		User user = userService.findById(id);
 		if (user == null) {
@@ -77,6 +83,7 @@ public class UserRestController {
 	 * @see UserService#create(User)
 	 */
 	@RequestMapping(method = RequestMethod.POST)
+	@ApiOperation(value = "Create a new user", notes = "Returns the created user.")
 	public ResponseEntity<User> createUser(@RequestBody User user) {
 		if (userService.exists(user)) {
 			return new ResponseEntity<User>(HttpStatus.CONFLICT);
@@ -101,6 +108,7 @@ public class UserRestController {
 	 * @see UserService#update(User)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@ApiOperation(value = "Update an existing user", notes = "Returns the created user.")
 	public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User updated) {
 		User currentUser = userService.findById(id);
 
@@ -128,6 +136,7 @@ public class UserRestController {
 	 * @see UserService#delete(User)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete a user")
 	public ResponseEntity<User> deleteUser(@PathVariable("id") String id) {
 		User user = userService.findById(id);
 		if (user == null) {
@@ -146,6 +155,7 @@ public class UserRestController {
 	 * @see UserService#deleteAll()
 	 */
 	@RequestMapping(method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete all users")
 	public ResponseEntity<User> deleteAllUsers() {
 		userService.deleteAll();
 		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);

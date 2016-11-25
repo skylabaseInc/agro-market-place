@@ -16,14 +16,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.skylabase.model.Location;
 import com.skylabase.service.LocationService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/locations")
+@Api(value="Location")
 public class LocationRestController {
 
 	@Autowired
 	private LocationService locationService;
 	
 	@RequestMapping(method=RequestMethod.GET)
+	@ApiOperation(value = "Get all locations", notes = "Returns a list of all locations.")
 	public ResponseEntity<List<Location>> getLocations() {
 		final List<Location> locations = locationService.findAll();
 		if (locations == null) {
@@ -33,6 +38,7 @@ public class LocationRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@ApiOperation(value = "Get location with given id", notes = "Returns location with given id")
 	public ResponseEntity<Location> getLocation(@PathVariable("id") String id) {
 		final Location location = locationService.findById(id);
 		if (location == null) {
@@ -42,6 +48,7 @@ public class LocationRestController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
+	@ApiOperation(value = "Create a location", notes = "Returns created location")
 	public ResponseEntity<Location> createLocation(@RequestBody Location location) {
 		final Location created = locationService.create(location);
 		HttpHeaders headers = new HttpHeaders();
@@ -50,6 +57,7 @@ public class LocationRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	@ApiOperation(value = "Update an existing location", notes = "Returns the updated location.")
 	public ResponseEntity<Location> updateLocation(@PathVariable("id") String id, @RequestBody Location location) {
 		final Location existing = locationService.findById(id);
 		if (existing == null) {
@@ -63,6 +71,7 @@ public class LocationRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	@ApiOperation(value = "Delete a location")
 	public ResponseEntity<Void> deleteLocation(@PathVariable("id") String id) {
 		final Location location = locationService.findById(id);
 		if (location == null) {
@@ -73,6 +82,7 @@ public class LocationRestController {
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE)
+	@ApiOperation(value = "Delete all locations")
 	public ResponseEntity<Void> deleteAllLocations() {
 		locationService.deleteAll();
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
