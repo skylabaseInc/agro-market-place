@@ -50,6 +50,8 @@ class FarmServiceImpl implements FarmService {
 
 	@Override
 	public boolean exists(Farm farm) {
+		if (farm.getId() == null)
+			return false;
 		return farmRepository.exists(farm.getId());
 	}
 

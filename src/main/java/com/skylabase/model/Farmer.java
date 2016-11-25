@@ -11,6 +11,13 @@ public class Farmer extends User {
 
 	private List<String> farms;
 
+	public Farmer() {}
+	
+	public Farmer(Farmer farmer) {
+		super(farmer);
+		this.farms = farmer.farms;
+	}
+	
 	public List<String> getFarms() {
 		return farms;
 	}

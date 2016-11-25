@@ -49,14 +49,22 @@ public class FarmerRestController {
 		return new ResponseEntity<Farmer>(created, HttpStatus.CREATED);
 	}
 	
-//	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-//	public ResponseEntity<Farmer> updateFarmer(@PathVariable("id") String id, @RequestBody Farmer farmer) {
-//		final Farmer existing = farmerService.findById(id);
-//		if (existing == null) {
-//			return new ResponseEntity<Farmer>(HttpStatus.NOT_FOUND);
-//		}
-//		
-//	}
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Farmer> updateFarmer(@PathVariable("id") String id, @RequestBody Farmer farmer) {
+		final Farmer existing = farmerService.findById(id);
+		if (existing == null) {
+			return new ResponseEntity<Farmer>(HttpStatus.NOT_FOUND);
+		}
+		existing.setUsername(farmer.getUsername());
+		existing.setPhoneNumber(farmer.getPhoneNumber());
+		existing.setFarms(farmer.getFarms());
+		existing.setCountry(farmer.getCountry());
+		existing.setEmail(farmer.getEmail());
+		existing.setCity(farmer.getCity());
+		
+		farmerService.update(existing);
+		return new ResponseEntity<Farmer>(farmer, HttpStatus.OK);
+	}
 	
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Farmer> deleteUser(@PathVariable("id") String id) {

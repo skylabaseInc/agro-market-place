@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import com.skylabase.model.Farmer;
 import com.skylabase.service.FarmerService;
 
+/**
+ * Implementation of {@link UserService}
+ * 
+ * @author ivange
+ *
+ */
 @Service
 class FarmerServiceImpl implements FarmerService {
 
@@ -42,6 +48,8 @@ class FarmerServiceImpl implements FarmerService {
 
 	@Override
 	public boolean exists(Farmer instance) {
+		if (instance.getId() == null)
+			return false;
 		return farmerRepository.exists(instance.getId());
 	}
 

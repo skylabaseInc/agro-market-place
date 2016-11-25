@@ -14,6 +14,14 @@ public class User {
 	
 	public User() {}
 
+	public User(User user) {
+		this.username = user.username;
+		this.email = user.email;
+		this.phoneNumber = user.phoneNumber;
+		this.country = user.phoneNumber;
+		this.city = user.city;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
