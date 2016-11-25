@@ -1,13 +1,16 @@
 package com.skylabase.service.impl;
 
+import com.skylabase.model.Category;
 import com.skylabase.model.Farm;
 import com.skylabase.model.Product;
+import com.skylabase.service.CategoryService;
 import com.skylabase.service.FarmService;
 import com.skylabase.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +21,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private FarmService farmService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    private boolean productSourceFarmIdExists(String sourceFarmId) {
+        return farmService.findById(sourceFarmId) != null;
+    }
+
+    private boolean productCategoryExists(String category_id) {
+        return categoryService.findById(category_id) != null;
+    }
 
     /**
      * Get an element of type T with given id.
@@ -48,10 +62,16 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product create(Product instance) {
-        Farm sourceFarm = farmService.findById(instance.getFarm_id());
-        if (sourceFarm == null) {
+        if (!productSourceFarmIdExists(instance.getFarm_id())) {
             // Should throw exception: No Farm With Such an Id.
             return null;
+        }
+        List<String> category_ids = instance.getCategory_ids();
+        for (String id : category_ids) {
+            if (productCategoryExists(id)) {
+                // Should throw exception: No Category With Such an Id.
+                return null;
+            }
         }
         return productRepository.save(instance);
     }
