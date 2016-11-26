@@ -14,14 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.skylabase.model.Farmer;
 import com.skylabase.service.FarmerService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/farmers")
+@Api(value = "Farmer")
 public class FarmerRestController {
 
 	@Autowired
 	private FarmerService farmerService;
 	
 	@RequestMapping(method=RequestMethod.GET)
+	@ApiOperation(value = "Get farmers", notes = "Returns a list of all farmers.")
 	public ResponseEntity<List<Farmer>> getFarmers() {
 		final List<Farmer> farmers = farmerService.findAll();
 		
@@ -32,6 +37,7 @@ public class FarmerRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@ApiOperation(value = "Get a farmer", notes = "Returns a single farmer.")
 	public ResponseEntity<Farmer> getFarmer(@PathVariable("id") String id) {
 		final Farmer farmer = farmerService.findById(id);
 		if (farmer == null) {
@@ -41,6 +47,7 @@ public class FarmerRestController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
+	@ApiOperation(value = "Create a new farmer", notes = "Returns the created farmer.")
 	public ResponseEntity<Farmer> createFarmer(@RequestBody Farmer farmer) {
 		if (farmerService.exists(farmer)) {
 			return new ResponseEntity<Farmer>(HttpStatus.CONFLICT);
@@ -50,6 +57,7 @@ public class FarmerRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	@ApiOperation(value = "Update farmer", notes = "Returns the updated farmer.")
 	public ResponseEntity<Farmer> updateFarmer(@PathVariable("id") String id, @RequestBody Farmer farmer) {
 		final Farmer existing = farmerService.findById(id);
 		if (existing == null) {
@@ -67,6 +75,7 @@ public class FarmerRestController {
 	}
 	
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
+	@ApiOperation(value = "Delete farmer.")
 	public ResponseEntity<Farmer> deleteFarmer(@PathVariable("id") String id) {
 		final Farmer farmer = farmerService.findById(id);
 		if (farmer == null) {
@@ -77,6 +86,7 @@ public class FarmerRestController {
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE)
+	@ApiOperation(value = "Delete all farmers.")
 	public ResponseEntity<Farmer> deleteAllFarmers() {
 		farmerService.deleteAll();
 		return new ResponseEntity<Farmer>(HttpStatus.NO_CONTENT);
