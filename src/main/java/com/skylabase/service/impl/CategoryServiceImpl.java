@@ -20,7 +20,8 @@ class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findOne(id);
     }
 
-    public List<Category> findByName(String name) {
+    @Override
+    public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
 
@@ -60,5 +61,5 @@ class CategoryServiceImpl implements CategoryService {
 
 interface CategoryRepository extends MongoRepository<Category, String> {
 
-    List<Category> findByName(@Param("name") String name);
+    Category findByName(@Param("name") String name);
 }
