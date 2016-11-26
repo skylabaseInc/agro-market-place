@@ -1,7 +1,6 @@
 package com.skylabase.model;
 
 import org.springframework.data.annotation.Id;
-
 import java.util.List;
 
 public class Product {

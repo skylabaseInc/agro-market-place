@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * Get an element of type T with given id.
+     * Get an element of type Product with given id.
      *
      * @param id the id of the element to get
      * @return the element if found
@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * Get all elements of type T in the system.
+     * Get all elements of type Product in the system.
      *
      * @return list of all elements found
      */
@@ -55,13 +55,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * Creates a new element of type T in the system
+     * Creates a new element of type Product in the system
      *
      * @param instance an instance of the element been created
      * @return the created element
      */
     @Override
     public Product create(Product instance) {
+        if (exists(instance)) {
+            // should throw exception: instance already exists.
+            return null;
+        }
         if (!productSourceFarmIdExists(instance.getFarm_id())) {
             // Should throw exception: No Farm With Such an Id.
             return null;
@@ -84,11 +88,22 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product update(Product instance) {
-        return create(instance);
+        if (!productSourceFarmIdExists(instance.getFarm_id())) {
+            // Should throw exception: No Farm With Such an Id.
+            return null;
+        }
+        List<String> category_ids = instance.getCategory_ids();
+        for (String id : category_ids) {
+            if (productCategoryExists(id)) {
+                // Should throw exception: No Category With Such an Id.
+                return null;
+            }
+        }
+        return productRepository.save(instance);
     }
 
     /**
-     * Deletes and element of type T from the system.
+     * Deletes and element of type Product from the system.
      *
      * @param instance the element been deleted
      */
@@ -112,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * Delete all Ts from the system.
+     * Delete all Products from the system.
      */
     @Override
     public void deleteAll() {

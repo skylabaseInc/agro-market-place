@@ -2,6 +2,8 @@ package com.skylabase.service.impl;
 
 import com.skylabase.model.Order;
 import com.skylabase.service.OrderService;
+import com.skylabase.service.ProductService;
+import com.skylabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,22 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProductService productService;
+
+    private boolean buyerIdExists(String buyerId) {
+        return userService.findById(buyerId) != null;
+    }
+
+    private boolean productIdExists(String productId) {
+        return productService.findById(productId) != null;
+    }
+
     /**
-     * Get an element of type T with given id.
+     * Get an element of type Order with given id.
      *
      * @param id the id of the element to get
      * @return the element if found
@@ -26,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Get all elements of type T in the system.
+     * Get all elements of type Order in the system.
      *
      * @return list of all elements found
      */
@@ -36,13 +52,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Creates a new element of type T in the system
+     * Creates a new element of type Order in the system
      *
      * @param instance an instance of the element been created
      * @return the created element
      */
     @Override
     public Order create(Order instance) {
+        if (exists(instance)) {
+            // should throw exception: Already Exists
+            return null;
+        }
+        if (!buyerIdExists(instance.getBuyer_id())) {
+            // should throw exception: No such Buyer
+            return null;
+        }
+        if (!productIdExists(instance.getProduct_id())) {
+            // should throw exception: No such product
+            return null;
+        }
         return orderRepository.save(instance);
     }
 
@@ -54,11 +82,19 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order update(Order instance) {
-        return create(instance);
+        if (!buyerIdExists(instance.getBuyer_id())) {
+            // should throw exception: No such Buyer
+            return null;
+        }
+        if (!productIdExists(instance.getProduct_id())) {
+            // should throw exception: No such product
+            return null;
+        }
+        return orderRepository.save(instance);
     }
 
     /**
-     * Deletes and element of type T from the system.
+     * Deletes and element of type Order from the system.
      *
      * @param instance the element been deleted
      */
@@ -82,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Delete all Ts from the system.
+     * Delete all Orders from the system.
      */
     @Override
     public void deleteAll() {
