@@ -3,6 +3,7 @@ package com.skylabase.rest.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class CategoryRestController {
     private CategoryService categoryService;
 
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "Get categories", notes = "Returns a list of all categories.")
     public ResponseEntity<List<Category>> getCategories(@RequestParam(value = "name", required = false) String name) {
         if (name != null) {
             List<Category> returnValue = new ArrayList<>();
