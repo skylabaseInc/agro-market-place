@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.skylabase.model.Category;
 import com.skylabase.service.CategoryService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/categories")
+@Api(value = "Category")
 public class CategoryRestController {
 
     @Autowired
@@ -44,6 +48,7 @@ public class CategoryRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get category", notes = "Returns a category.")
     public ResponseEntity<Category> getCategoryById(@PathVariable("id") String id) {
         Category category = categoryService.findById(id);
         if (category == null) {
@@ -53,6 +58,7 @@ public class CategoryRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "Create a new category", notes = "Returns the created category.")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         if (categoryService.exists(category)) {
             return new ResponseEntity<Category>(HttpStatus.CONFLICT);
@@ -62,6 +68,7 @@ public class CategoryRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ApiOperation(value = "Update an existing category", notes = "Returns the update category.")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") String id, @RequestBody Category category) {
         final Category existing = categoryService.findById(id);
         if (existing == null) {
@@ -74,6 +81,7 @@ public class CategoryRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete a category")
     public ResponseEntity<Category> deleteCategory(@PathVariable("id") String id) {
         final Category category = categoryService.findById(id);
         if (category == null) {
@@ -84,6 +92,7 @@ public class CategoryRestController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete all categories")
     public ResponseEntity<Category> deleteAllCategories() {
         categoryService.deleteAll();
         return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);

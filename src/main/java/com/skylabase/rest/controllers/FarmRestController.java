@@ -17,30 +17,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.skylabase.model.Farm;
 import com.skylabase.service.FarmService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/farms")
+@Api(value="Farm")
 public class FarmRestController {
 
 	@Autowired
 	private FarmService farmService;
-
-	/**
-	 * Get a list of all farms in the system.
-	 * 
-	 * @return the list of farms
-	 * 
-	 * @see FarmService#findAll()
-	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Farm>> getFarms() {
-		List<Farm> farms = farmService.findAll();
-
-		if (farms == null) {
-			return new ResponseEntity<List<Farm>>(HttpStatus.NOT_FOUND);
-		}
-		
-		return new ResponseEntity<List<Farm>>(farms, HttpStatus.OK);
-	}
 
 	/**
 	 * Get Farm with given farm id.
@@ -52,6 +38,7 @@ public class FarmRestController {
 	 * @see FarmService#findById(String)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "Get farm by id", notes = "Returns a farm")
 	public ResponseEntity<Farm> getFarm(@PathVariable("id") String id) {
 		final Farm farm = farmService.findById(id);
 		if (farm == null) {
@@ -60,10 +47,17 @@ public class FarmRestController {
 		return new ResponseEntity<Farm>(farm, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, params = { "ownerId" })
-	public ResponseEntity<List<Farm>> getFarmsByOwner(@RequestParam("ownerId") String ownerId) {
-		final List<Farm> farms = farmService.findByOwnerId(ownerId);
+	@RequestMapping(method = RequestMethod.GET)
+	@ApiOperation(value = "Search farms by owner", notes = "Returns a list of farms belonging to owner")
+	public ResponseEntity<List<Farm>> getFarms(@RequestParam(value = "ownerId", required = false) String ownerId) {
+		List<Farm> farms= null;
 		
+		if (ownerId == null) {
+			farms = farmService.findAll();
+		}
+		else {
+			farms = farmService.findByOwnerId(ownerId);
+		}
 		if (farms == null) {
 			return new ResponseEntity<List<Farm>>(HttpStatus.NOT_FOUND);
 		}
@@ -80,6 +74,7 @@ public class FarmRestController {
 	 * @see FarmService#create(Farm)
 	 */
 	@RequestMapping(method = RequestMethod.POST)
+	@ApiOperation(value = "Create a new farm", notes = "Returns the created farm")
 	public ResponseEntity<Farm> createFarm(@RequestBody Farm farm) {
 		if (farmService.exists(farm)) {
 			return new ResponseEntity<Farm>(HttpStatus.CONFLICT);
@@ -104,6 +99,7 @@ public class FarmRestController {
 	 * @see FarmService#update(Farm)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@ApiOperation(value = "Update an existing farm", notes = "Returns the updated farm.")
 	public ResponseEntity<Farm> updateFarm(@PathVariable("id") String id, @RequestBody Farm updated) {
 		Farm currentFarm = farmService.findById(id);
 
@@ -131,6 +127,7 @@ public class FarmRestController {
 	 * @see FarmService#delete(Farm)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete a farm")
 	public ResponseEntity<Farm> deleteFarm(@PathVariable("id") String id) {
 		Farm farm = farmService.findById(id);
 		if (farm == null) {
@@ -149,6 +146,7 @@ public class FarmRestController {
 	 * @see FarmService#deleteAll()
 	 */
 	@RequestMapping(method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete all farms")
 	public ResponseEntity<Farm> deleteAllFarms() {
 		farmService.deleteAll();
 		return new ResponseEntity<Farm>(HttpStatus.NO_CONTENT);
