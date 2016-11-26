@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface CategoryService extends GenericService<Category> {
 
-    public List<Category> findByName(String name);
+    public Category findByName(String name);
 }

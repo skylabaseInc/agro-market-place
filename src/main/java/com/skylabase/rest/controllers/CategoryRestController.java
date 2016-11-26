@@ -1,7 +1,9 @@
 package com.skylabase.rest.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.skylabase.model.Category;
 import com.skylabase.service.CategoryService;
 
@@ -28,11 +29,21 @@ public class CategoryRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Get categories", notes = "Returns a list of all categories.")
-    public ResponseEntity<List<Category>> getCategories(@RequestParam(value = "name", defaultValue = "") String name) {
-        if (categoryService.findAll() == null) {
+    public ResponseEntity<List<Category>> getCategories(@RequestParam(value = "name", required = false) String name) {
+        if (name != null) {
+            List<Category> returnValue = new ArrayList<>();
+            returnValue.add(getCategoryByName(name));
+        }
+        List<Category> returnValue = categoryService.findAll();
+        if (returnValue == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(categoryService.findByName(name), HttpStatus.OK);
+        return new ResponseEntity<>(returnValue, HttpStatus.OK);
+    }
+
+    public Category getCategoryByName(String name) {
+        Category returnValue = categoryService.findByName(name);
+        return returnValue;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
