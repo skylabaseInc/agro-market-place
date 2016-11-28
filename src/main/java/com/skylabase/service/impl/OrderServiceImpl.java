@@ -63,11 +63,11 @@ public class OrderServiceImpl implements OrderService {
             // should throw exception: Already Exists
             return null;
         }
-        if (!buyerIdExists(instance.getBuyer_id())) {
+        if (!buyerIdExists(instance.getBuyerId())) {
             // should throw exception: No such Buyer
             return null;
         }
-        if (!productIdExists(instance.getProduct_id())) {
+        if (!productIdExists(instance.getProductId())) {
             // should throw exception: No such product
             return null;
         }
@@ -82,11 +82,11 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order update(Order instance) {
-        if (!buyerIdExists(instance.getBuyer_id())) {
+        if (!buyerIdExists(instance.getBuyerId())) {
             // should throw exception: No such Buyer
             return null;
         }
-        if (!productIdExists(instance.getProduct_id())) {
+        if (!productIdExists(instance.getProductId())) {
             // should throw exception: No such product
             return null;
         }

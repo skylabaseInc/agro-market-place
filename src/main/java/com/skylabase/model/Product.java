@@ -8,10 +8,10 @@ public class Product {
     @Id
     String id;
     String name;
-    String farm_id;
-    List<String> category_ids;
+    String farmId;
+    List<String> categoryIds;
     String descritpion;
-    String image_path;
+    String imagePath;
     long quantity;
 
     public String getId() {
@@ -30,20 +30,20 @@ public class Product {
         this.name = name;
     }
 
-    public String getFarm_id() {
-        return farm_id;
+    public String getFarmId() {
+        return farmId;
     }
 
-    public void setFarm_id(String farm_id) {
-        this.farm_id = farm_id;
+    public void setFarmId(String farmId) {
+        this.farmId = farmId;
     }
 
-    public List<String> getCategory_ids() {
-        return category_ids;
+    public List<String> getCategoryIds() {
+        return categoryIds;
     }
 
-    public void setCategory_ids(List<String> category_ids) {
-        this.category_ids = category_ids;
+    public void setCategoryIds(List<String> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 
     public String getDescritpion() {
@@ -54,12 +54,12 @@ public class Product {
         this.descritpion = descritpion;
     }
 
-    public String getImage_path() {
-        return image_path;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage_path(String image_path) {
-        this.image_path = image_path;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public long getQuantity() {

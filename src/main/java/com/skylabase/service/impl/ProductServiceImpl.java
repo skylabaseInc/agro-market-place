@@ -1,7 +1,5 @@
 package com.skylabase.service.impl;
 
-import com.skylabase.model.Category;
-import com.skylabase.model.Farm;
 import com.skylabase.model.Product;
 import com.skylabase.service.CategoryService;
 import com.skylabase.service.FarmService;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +26,8 @@ public class ProductServiceImpl implements ProductService {
         return farmService.findById(sourceFarmId) != null;
     }
 
-    private boolean productCategoryExists(String category_id) {
-        return categoryService.findById(category_id) != null;
+    private boolean productCategoryExists(String categoryId) {
+        return categoryService.findById(categoryId) != null;
     }
 
     /**
@@ -66,12 +63,12 @@ public class ProductServiceImpl implements ProductService {
             // should throw exception: instance already exists.
             return null;
         }
-        if (!productSourceFarmIdExists(instance.getFarm_id())) {
+        if (!productSourceFarmIdExists(instance.getFarmId())) {
             // Should throw exception: No Farm With Such an Id.
             return null;
         }
-        List<String> category_ids = instance.getCategory_ids();
-        for (String id : category_ids) {
+        List<String> categoryIds = instance.getCategoryIds();
+        for (String id : categoryIds) {
             if (productCategoryExists(id)) {
                 // Should throw exception: No Category With Such an Id.
                 return null;
@@ -88,12 +85,12 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product update(Product instance) {
-        if (!productSourceFarmIdExists(instance.getFarm_id())) {
+        if (!productSourceFarmIdExists(instance.getFarmId())) {
             // Should throw exception: No Farm With Such an Id.
             return null;
         }
-        List<String> category_ids = instance.getCategory_ids();
-        for (String id : category_ids) {
+        List<String> categoryIds = instance.getCategoryIds();
+        for (String id : categoryIds) {
             if (productCategoryExists(id)) {
                 // Should throw exception: No Category With Such an Id.
                 return null;

@@ -8,8 +8,8 @@ public class Order {
 
     @Id
     String id;
-    String buyer_id;
-    String product_id;
+    String buyerId;
+    String productId;
     Date date;
     int quantity;
 
@@ -21,20 +21,20 @@ public class Order {
         this.id = id;
     }
 
-    public String getBuyer_id() {
-        return buyer_id;
+    public String getBuyerId() {
+        return buyerId;
     }
 
-    public void setBuyer_id(String buyer_id) {
-        this.buyer_id = buyer_id;
+    public void setBuyerId(String buyerId) {
+        this.buyerId = buyerId;
     }
 
-    public String getProduct_id() {
-        return product_id;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public Date getDate() {

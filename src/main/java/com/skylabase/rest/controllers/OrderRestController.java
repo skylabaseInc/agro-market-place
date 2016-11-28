@@ -2,7 +2,6 @@ package com.skylabase.rest.controllers;
 
 import java.util.List;
 
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -96,8 +95,8 @@ public class OrderRestController {
             return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
         }
 
-        currentOrder.setBuyer_id(updated.getBuyer_id());
-        currentOrder.setProduct_id(updated.getProduct_id());
+        currentOrder.setBuyerId(updated.getBuyerId());
+        currentOrder.setProductId(updated.getProductId());
         currentOrder.setQuantity(updated.getQuantity());
         currentOrder.setDate(updated.getDate());
         orderService.update(currentOrder);
