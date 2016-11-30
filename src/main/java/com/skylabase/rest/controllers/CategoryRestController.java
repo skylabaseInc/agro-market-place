@@ -63,7 +63,7 @@ public class CategoryRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @ApiOperation(value = "Update an existing category", notes = "Returns the update category.")
+    @ApiOperation(value = "Update an existing category", notes = "Returns the updated category.")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") String id, @RequestBody Category category) {
         final Category existing = categoryService.findById(id);
         if (existing == null) {

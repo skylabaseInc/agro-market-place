@@ -9,27 +9,56 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * RestController for that handles requests {@link Category} objects
+ *
+ * @see Category
+ * @see CategoryRepository
+ */
 @Service
 class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
 
+    /**
+     * Get an element of type Category with given id.
+     *
+     * @param id the id of the element to get
+     * @return the element if found
+     */
     @Override
     public Category findById(String id) {
         return categoryRepository.findOne(id);
     }
 
+    /**
+     * Get an element of type Category with given name.
+     *
+     * @param name the id of the element to get
+     * @return the element if found
+     */
     @Override
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
 
+    /**
+     * Get all elements of type Category.
+     *
+     * @return the list of Category elements if found
+     */
     @Override
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 
+    /**
+     * Create a Category element.
+     *
+     * @param category the Category object to save.
+     * @return the category if succesfully saved.
+     */
     @Override
     public Category create(Category category) {
         return categoryRepository.save(category);

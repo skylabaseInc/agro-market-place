@@ -2,6 +2,8 @@ package com.skylabase.rest.controllers;
 
 import java.util.List;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import com.skylabase.service.OrderService;
  */
 @RestController
 @RequestMapping("/orders")
+@Api(value = "Order")
 public class OrderRestController {
 
     @Autowired
@@ -36,6 +39,7 @@ public class OrderRestController {
      * @return the list of orders
      */
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "Get orders", notes = "Returns a list of all orders.")
     public ResponseEntity<List<Order>> getOrders() {
         final List<Order> orders = orderService.findAll();
         return new ResponseEntity<List<Order>>(orders, HttpStatus.OK);
@@ -49,6 +53,7 @@ public class OrderRestController {
      * @see OrderService#findById(String)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get order", notes = "Returns an order.")
     public ResponseEntity<Order> getOrder(@PathVariable("id") String id) {
         Order order = orderService.findById(id);
         if (order == null) {
@@ -65,6 +70,7 @@ public class OrderRestController {
      * @return an HttpStatus.CREATED if order was successfully created
      */
     @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "Create a new order", notes = "Returns the created order.")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         if (orderService.exists(order)) {
             return new ResponseEntity<Order>(HttpStatus.CONFLICT);
@@ -84,6 +90,7 @@ public class OrderRestController {
      * updated does not exist
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ApiOperation(value = "Update an existing order", notes = "Returns the updated order.")
     public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order updated) {
         final Order currentOrder = orderService.findById(id);
 
@@ -107,6 +114,7 @@ public class OrderRestController {
      * HttpStatus.NO_CONTENT is returned
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete an order")
     public ResponseEntity<Order> deleteOrder(@PathVariable("id") String id) {
         Order order = orderService.findById(id);
         if (order == null) {
@@ -124,6 +132,7 @@ public class OrderRestController {
      * @see OrderService#deleteAll()
      */
     @RequestMapping(method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete all orders")
     public ResponseEntity<Order> deleteAllOrders() {
         orderService.deleteAll();
         return new ResponseEntity<Order>(HttpStatus.NO_CONTENT);
