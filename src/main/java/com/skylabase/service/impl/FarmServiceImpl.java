@@ -40,7 +40,7 @@ class FarmServiceImpl implements FarmService {
     public Farm create(Farm farm) {
         User owner = userService.findById(farm.getOwnerId());
         if (owner == null) {
-            // Should throw exception: No Farm With Such an Id.
+            // TODO Should throw exception: No Farm With Such an Id.
             return null;
         }
         return farmRepository.save(farm);

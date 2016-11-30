@@ -60,15 +60,15 @@ class OrderServiceImpl implements OrderService {
     @Override
     public Order create(Order instance) {
         if (exists(instance)) {
-            // should throw exception: Already Exists
+            // TODO should throw exception: Already Exists
             return null;
         }
         if (!buyerIdExists(instance.getBuyerId())) {
-            // should throw exception: No such Buyer
+            // TODO should throw exception: No such Buyer
             return null;
         }
         if (!productIdExists(instance.getProductId())) {
-            // should throw exception: No such product
+            // TODO should throw exception: No such product
             return null;
         }
         return orderRepository.save(instance);
@@ -83,11 +83,11 @@ class OrderServiceImpl implements OrderService {
     @Override
     public Order update(Order instance) {
         if (!buyerIdExists(instance.getBuyerId())) {
-            // should throw exception: No such Buyer
+            // TODO should throw exception: No such Buyer
             return null;
         }
         if (!productIdExists(instance.getProductId())) {
-            // should throw exception: No such product
+            // TODO should throw exception: No such product
             return null;
         }
         return orderRepository.save(instance);
