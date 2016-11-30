@@ -7,11 +7,11 @@ import java.util.Date;
 public class Order {
 
     @Id
-    String id;
-    String buyerId;
-    String productId;
-    Date date;
-    int quantity;
+    private String id;
+    private String buyerId;
+    private String productId;
+    private Date date;
+    private int quantity;
 
     public String getId() {
         return id;
