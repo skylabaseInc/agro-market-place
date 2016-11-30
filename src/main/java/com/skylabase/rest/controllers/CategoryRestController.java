@@ -30,20 +30,16 @@ public class CategoryRestController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Get categories", notes = "Returns a list of all categories.")
     public ResponseEntity<List<Category>> getCategories(@RequestParam(value = "name", required = false) String name) {
+        List<Category> returnValue = new ArrayList<>();
         if (name != null) {
-            List<Category> returnValue = new ArrayList<>();
-            returnValue.add(getCategoryByName(name));
+            returnValue.add(categoryService.findByName(name));
+            return new ResponseEntity<>(returnValue, HttpStatus.OK);
         }
-        List<Category> returnValue = categoryService.findAll();
+        returnValue = categoryService.findAll();
         if (returnValue == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(returnValue, HttpStatus.OK);
-    }
-
-    public Category getCategoryByName(String name) {
-        Category returnValue = categoryService.findByName(name);
-        return returnValue;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

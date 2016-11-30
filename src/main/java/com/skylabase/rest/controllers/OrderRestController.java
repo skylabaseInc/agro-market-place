@@ -37,11 +37,7 @@ public class OrderRestController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Order>> getOrders() {
-        List<Order> orders = orderService.findAll();
-
-        if (orders.isEmpty()) {
-            return new ResponseEntity<List<Order>>(HttpStatus.NO_CONTENT);
-        }
+        final List<Order> orders = orderService.findAll();
         return new ResponseEntity<List<Order>>(orders, HttpStatus.OK);
     }
 
@@ -76,7 +72,7 @@ public class OrderRestController {
         final Order created = orderService.create(order);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
-        return new ResponseEntity<Order>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<Order>(created, headers, HttpStatus.CREATED);
     }
 
     /**
@@ -89,7 +85,7 @@ public class OrderRestController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order updated) {
-        Order currentOrder = orderService.findById(id);
+        final Order currentOrder = orderService.findById(id);
 
         if (currentOrder == null) {
             return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);

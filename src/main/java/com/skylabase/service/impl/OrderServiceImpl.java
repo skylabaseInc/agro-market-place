@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OrderServiceImpl implements OrderService {
+class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;

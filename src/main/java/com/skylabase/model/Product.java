@@ -6,13 +6,13 @@ import java.util.List;
 public class Product {
 
     @Id
-    String id;
-    String name;
-    String farmId;
-    List<String> categoryIds;
-    String descritpion;
-    String imagePath;
-    long quantity;
+    private String id;
+    private String name;
+    private String farmId;
+    private List<String> categoryIds;
+    private String descritpion;
+    private String imagePath;
+    private int quantity;
 
     public String getId() {
         return id;
@@ -62,11 +62,11 @@ public class Product {
         this.imagePath = imagePath;
     }
 
-    public long getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }
