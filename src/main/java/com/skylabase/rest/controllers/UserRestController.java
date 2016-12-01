@@ -59,7 +59,7 @@ public class UserRestController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, params = {"username"})
 	@ApiOperation(value = "Get user", notes = "Returns user with give username")
 	public ResponseEntity<User> getUserByUsername(@RequestParam(value = "username", required = false) String username) {
 		final User result = userService.findByUsername(username);
