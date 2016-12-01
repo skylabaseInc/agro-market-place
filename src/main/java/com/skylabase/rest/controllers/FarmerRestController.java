@@ -66,9 +66,8 @@ public class FarmerRestController {
 		existing.setUsername(farmer.getUsername());
 		existing.setPhoneNumber(farmer.getPhoneNumber());
 		existing.setFarms(farmer.getFarms());
-		existing.setCountry(farmer.getCountry());
 		existing.setEmail(farmer.getEmail());
-		existing.setCity(farmer.getCity());
+		existing.setLocationId(farmer.getLocationId());
 		
 		farmerService.update(existing);
 		return new ResponseEntity<Farmer>(farmer, HttpStatus.OK);
