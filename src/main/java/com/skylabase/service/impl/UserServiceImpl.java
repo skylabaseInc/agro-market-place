@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.skylabase.model.User;
@@ -56,14 +57,18 @@ class UserServiceImpl implements UserService {
 	public void deleteAll() {
 		userRepository.deleteAll();
 	}
+
+	@Override
+	public User findByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
 }
 
 /**
  * Repository used by UserService to access database.
- * 
- * @author ivange
  */
 interface UserRepository extends MongoRepository<User, String> {
 
+	User findByUsername(@Param("username") String username);
 }
 

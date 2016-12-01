@@ -22,6 +22,14 @@ public interface UserService {
 	public User findById(String id);
 	
 	/**
+	 * Find a user by username.
+	 * 
+	 * @param username the username of the user to find
+	 * @return the user if found else null
+	 */
+	public User findByUsername(String username);
+	
+	/**
 	 * Get a list of all users from the system.
 	 * 
 	 * @return list containing all users in the system

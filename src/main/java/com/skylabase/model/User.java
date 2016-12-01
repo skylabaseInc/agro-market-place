@@ -7,10 +7,10 @@ public class User {
 	@Id
 	private String id;
 	private String username;
+	private String password;
 	private String email;
 	private String phoneNumber; 
-	private String city;
-	private String country;
+	private String locationId;
 	
 	public User() {}
 
@@ -18,8 +18,6 @@ public class User {
 		this.username = user.username;
 		this.email = user.email;
 		this.phoneNumber = user.phoneNumber;
-		this.country = user.phoneNumber;
-		this.city = user.city;
 	}
 	
 	public String getUsername() {
@@ -46,27 +44,27 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
 	}
 }

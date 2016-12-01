@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -51,6 +52,21 @@ public class UserRestController {
 			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+	}
+	
+	/**
+	 * Get a user with given username or 404 if user is not found.
+	 * 
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	@ApiOperation(value = "Get user", notes = "Returns user with give username")
+	public ResponseEntity<User> getUserByUsername(@RequestParam(value = "username", required = false) String username) {
+		final User result = userService.findByUsername(username);
+		if (result == null) {
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<User>(result, HttpStatus.OK);
 	}
 
 	/**
@@ -119,8 +135,7 @@ public class UserRestController {
 		currentUser.setUsername(updated.getUsername());
 		currentUser.setPhoneNumber(updated.getPhoneNumber());
 		currentUser.setEmail(updated.getEmail());
-		currentUser.setCountry(updated.getCountry());
-		currentUser.setCity(updated.getCity());
+		currentUser.setLocationId(updated.getLocationId());
 		userService.update(currentUser);
 		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 	}
