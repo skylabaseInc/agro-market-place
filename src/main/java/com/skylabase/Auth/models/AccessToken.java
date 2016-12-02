@@ -1,21 +1,28 @@
 package com.skylabase.Auth.models;
 
 import com.skylabase.model.User;
+import org.springframework.data.annotation.Id;
 
 public class AccessToken {
-    private User user;
+
+    @Id
     private String stringToken;
+    private User user;
+
+    public AccessToken() {
+
+    }
 
     public AccessToken(User user, String stringToken) {
         this.user = user;
         this.stringToken = stringToken;
     }
 
-    public User getUser() {
-        return user;
-    }
-
     public String getStringToken() {
         return stringToken;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

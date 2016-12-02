@@ -1,29 +1,54 @@
 package com.skylabase.Auth.services.impl;
 
 import com.skylabase.Auth.models.AccessToken;
-import com.skylabase.Auth.repositories.TokenRepository;
 import com.skylabase.Auth.services.AuthenticationService;
 import com.skylabase.model.User;
+import com.skylabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
-    private static TokenRepository tokenRepository;
+    private TokenRepository tokenRepository;
 
-    @Override
-    public AccessToken login(User user) {
-        return tokenRepository.createAccessToken(user);
+    @Autowired
+    private UserService userService;
+
+    private String digestString(String data) {
+        return String.valueOf("amp" + data.hashCode());
     }
 
     @Override
-    public AccessToken getAccessToken(String stringToken) {
-        return tokenRepository.findByAccessToken(stringToken);
+    public String createAccessToken(User user) {
+        String id = user.getId();
+        if (id != null) {
+            user = userService.findById(id);
+        } else {
+            return null;
+        }
+        if (user != null) {
+            // TODO: add password here
+            String tokenString = digestString(user.getUsername() + user.getEmail());
+            AccessToken accessToken = new AccessToken(user, tokenString);
+            tokenRepository.save(accessToken);
+            return accessToken.getStringToken();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String getAccessToken(String stringToken) {
+        AccessToken accessToken = tokenRepository.findByStringToken(stringToken);
+        return accessToken.getStringToken();
     }
 
     @Override
     public boolean isStringTokenValid(String stringToken) {
-        return tokenRepository.contains(stringToken);
+        return tokenRepository.exists(stringToken);
     }
 
     @Override
@@ -35,4 +60,9 @@ class AuthenticationServiceImpl implements AuthenticationService {
     public void clearAccessTokens() {
         tokenRepository.deleteAll();
     }
+}
+
+interface TokenRepository extends MongoRepository<AccessToken, String> {
+
+    AccessToken findByStringToken(String stringToken);
 }
