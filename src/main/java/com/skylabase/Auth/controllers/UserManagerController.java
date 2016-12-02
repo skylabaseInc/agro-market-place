@@ -27,12 +27,10 @@ public class UserManagerController {
         User user = userService.findById(id);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else if (user.getEmail().equals(email)) {
+        } else if (user.getEmail().equals(email)) {
             String returnValue = authService.createAccessToken(user);
             return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
-        }
-        else {
+        } else {
             return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
         }
     }

@@ -10,7 +10,6 @@ public class AccessToken {
     private User user;
 
     public AccessToken() {
-
     }
 
     public AccessToken(User user, String stringToken) {
