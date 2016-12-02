@@ -29,10 +29,7 @@ public class FarmerRestController {
 	@ApiOperation(value = "Get farmers", notes = "Returns a list of all farmers.")
 	public ResponseEntity<List<Farmer>> getFarmers() {
 		final List<Farmer> farmers = farmerService.findAll();
-		
-		if (farmers.isEmpty()) {
-			return new ResponseEntity<List<Farmer>>(HttpStatus.NO_CONTENT);
-		}
+
 		return new ResponseEntity<List<Farmer>>(farmers, HttpStatus.OK);
 	}
 	
