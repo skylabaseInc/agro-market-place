@@ -48,9 +48,6 @@ public class UserRestController {
 	public ResponseEntity<List<User>> getUsers() {
 		List<User> users = userService.findAll();
 
-		if (users.isEmpty()) {
-			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
-		}
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 	
