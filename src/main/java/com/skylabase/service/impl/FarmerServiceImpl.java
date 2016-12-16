@@ -1,19 +1,17 @@
 package com.skylabase.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import com.skylabase.model.Farmer;
 import com.skylabase.service.FarmerService;
 
 /**
- * Implementation of {@link UserService}
- * 
- * @author ivange
- *
+ * Implementation of {@link FarmerService}
  */
 @Service
 class FarmerServiceImpl implements FarmerService {
@@ -22,13 +20,17 @@ class FarmerServiceImpl implements FarmerService {
 	private FarmerRepository farmerRepository;
 	
 	@Override
-	public Farmer findById(String id) {
+	public Farmer findById(Long id) {
 		return farmerRepository.findOne(id);
 	}
 
 	@Override
 	public List<Farmer> findAll() {
-		return farmerRepository.findAll();
+		final List<Farmer> farmers = new ArrayList<>();
+		for (Farmer farmer: farmerRepository.findAll()) {
+			farmers.add(farmer);
+		}
+		return farmers;
 	}
 
 	@Override
@@ -48,8 +50,6 @@ class FarmerServiceImpl implements FarmerService {
 
 	@Override
 	public boolean exists(Farmer instance) {
-		if (instance.getId() == null)
-			return false;
 		return farmerRepository.exists(instance.getId());
 	}
 
@@ -59,6 +59,6 @@ class FarmerServiceImpl implements FarmerService {
 	}
 }
 
-interface FarmerRepository extends MongoRepository<Farmer, String> {
+interface FarmerRepository extends PagingAndSortingRepository<Farmer, Long> {
 	
 }

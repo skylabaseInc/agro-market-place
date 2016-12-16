@@ -37,7 +37,7 @@ public class ProductRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get product", notes = "Returns a product.")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") String id) {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
         Product product = productService.findById(id);
         if (product == null) {
             return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
@@ -57,7 +57,7 @@ public class ProductRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "Update an existing product", notes = "Returns the updated product.")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
         final Product existing = productService.findById(id);
         if (existing == null) {
             return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
@@ -70,7 +70,7 @@ public class ProductRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Delete a product")
-    public ResponseEntity<Product> deleteProduct(@PathVariable("id") String id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
         final Product product = productService.findById(id);
         if (product == null) {
             return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);

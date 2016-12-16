@@ -1,10 +1,11 @@
 package com.skylabase.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.skylabase.model.User;
 import com.skylabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.skylabase.model.Farm;
@@ -13,7 +14,6 @@ import com.skylabase.service.FarmService;
 /**
  * RestController for that handles requests {@link Farm} objects
  *
- * @author ivange
  * @see Farm
  * @see FarmRepository
  */
@@ -27,22 +27,21 @@ class FarmServiceImpl implements FarmService {
     private UserService userService;
 
     @Override
-    public Farm findById(String id) {
+    public Farm findById(Long id) {
         return farmRepository.findOne(id);
     }
 
     @Override
     public List<Farm> findAll() {
-        return farmRepository.findAll();
+        final List<Farm> farms = new ArrayList<>();
+        for (Farm farm: farmRepository.findAll()) {
+            farms.add(farm);
+        }
+        return farms;
     }
 
     @Override
     public Farm create(Farm farm) {
-        User owner = userService.findById(farm.getOwnerId());
-        if (owner == null) {
-            // TODO Should throw exception: No Farm With Such an Id.
-            return null;
-        }
         return farmRepository.save(farm);
     }
 
@@ -58,8 +57,6 @@ class FarmServiceImpl implements FarmService {
 
     @Override
     public boolean exists(Farm farm) {
-        if (farm.getId() == null)
-            return false;
         return farmRepository.exists(farm.getId());
     }
 
@@ -67,19 +64,11 @@ class FarmServiceImpl implements FarmService {
     public void deleteAll() {
         farmRepository.deleteAll();
     }
-
-    @Override
-    public List<Farm> findByOwnerId(String ownerId) {
-        return farmRepository.findByOwnerId(ownerId);
-    }
 }
 
 /**
  * Repository used by UserRepositoryImpl to access database.
- *
- * @author ivange
  */
-interface FarmRepository extends MongoRepository<Farm, String> {
+interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
 
-    List<Farm> findByOwnerId(@Param("ownerId") String ownerId);
 }

@@ -5,9 +5,10 @@ import com.skylabase.service.CategoryService;
 import com.skylabase.service.FarmService;
 import com.skylabase.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,20 +17,6 @@ class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private FarmService farmService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    private boolean productSourceFarmIdExists(String sourceFarmId) {
-        return farmService.findById(sourceFarmId) != null;
-    }
-
-    private boolean productCategoryExists(String categoryId) {
-        return categoryService.findById(categoryId) != null;
-    }
-
     /**
      * Get an element of type Product with given id.
      *
@@ -37,7 +24,7 @@ class ProductServiceImpl implements ProductService {
      * @return the element if found
      */
     @Override
-    public Product findById(String id) {
+    public Product findById(Long id) {
         return productRepository.findOne(id);
     }
 
@@ -48,7 +35,11 @@ class ProductServiceImpl implements ProductService {
      */
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll();
+        final List<Product> products = new ArrayList<>();
+        for (Product product: products) {
+            products.add(product);
+        }
+        return products;
     }
 
     /**
@@ -59,21 +50,6 @@ class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product create(Product instance) {
-        if (exists(instance)) {
-            // should throw exception: instance already exists.
-            return null;
-        }
-        if (!productSourceFarmIdExists(instance.getFarmId())) {
-            // Should throw exception: No Farm With Such an Id.
-            return null;
-        }
-        List<String> categoryIds = instance.getCategoryIds();
-        for (String id : categoryIds) {
-            if (productCategoryExists(id)) {
-                // Should throw exception: No Category With Such an Id.
-                return null;
-            }
-        }
         return productRepository.save(instance);
     }
 
@@ -85,17 +61,6 @@ class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product update(Product instance) {
-        if (!productSourceFarmIdExists(instance.getFarmId())) {
-            // TODO Should throw exception: No Farm With Such an Id.
-            return null;
-        }
-        List<String> categoryIds = instance.getCategoryIds();
-        for (String id : categoryIds) {
-            if (productCategoryExists(id)) {
-                // TODO Should throw exception: No Category With Such an Id.
-                return null;
-            }
-        }
         return productRepository.save(instance);
     }
 
@@ -117,9 +82,6 @@ class ProductServiceImpl implements ProductService {
      */
     @Override
     public boolean exists(Product instance) {
-        if (instance.getId() == null) {
-            return false;
-        }
         return productRepository.exists(instance.getId());
     }
 
@@ -132,5 +94,5 @@ class ProductServiceImpl implements ProductService {
     }
 }
 
-interface ProductRepository extends MongoRepository<Product, String> {
+interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
 }

@@ -25,8 +25,6 @@ import io.swagger.annotations.ApiOperation;
  *
  * @see User
  * @see UserService
- * 
- * @author ivange
  */
 @RestController
 @RequestMapping("/users")
@@ -73,11 +71,11 @@ public class UserRestController {
 	 *            the id of the user to return
 	 * @return the user of given id
 	 * 
-	 * @see UserService#findById(String)
+	 * @see UserService#findById(long)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a particular user", notes = "Returns a particular user.")
-	public ResponseEntity<User> getUser(@PathVariable("id") String id) {
+	public ResponseEntity<User> getUser(@PathVariable("id") long id) {
 		User user = userService.findById(id);
 		if (user == null) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -90,7 +88,6 @@ public class UserRestController {
 	 * 
 	 * @param user
 	 *            the user to be created
-	 * @param ucBuilder
 	 * @return an HttpStatus.CREATED if user was successfully created
 	 * 
 	 * @see UserService#create(User)
@@ -122,7 +119,7 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update an existing user", notes = "Returns the created user.")
-	public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User updated) {
+	public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User updated) {
 		User currentUser = userService.findById(id);
 
 		if (currentUser == null) {
@@ -132,7 +129,6 @@ public class UserRestController {
 		currentUser.setUsername(updated.getUsername());
 		currentUser.setPhoneNumber(updated.getPhoneNumber());
 		currentUser.setEmail(updated.getEmail());
-		currentUser.setLocationId(updated.getLocationId());
 		userService.update(currentUser);
 		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 	}
@@ -149,7 +145,7 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a user")
-	public ResponseEntity<User> deleteUser(@PathVariable("id") String id) {
+	public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
 		User user = userService.findById(id);
 		if (user == null) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);

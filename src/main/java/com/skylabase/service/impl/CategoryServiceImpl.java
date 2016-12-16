@@ -3,10 +3,11 @@ package com.skylabase.service.impl;
 import com.skylabase.model.Category;
 import com.skylabase.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ class CategoryServiceImpl implements CategoryService {
      * @return the element if found
      */
     @Override
-    public Category findById(String id) {
+    public Category findById(Long id) {
         return categoryRepository.findOne(id);
     }
 
@@ -50,7 +51,11 @@ class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public List<Category> findAll() {
-        return categoryRepository.findAll();
+        final List<Category> categories = new ArrayList<>();
+        for (Category category: categoryRepository.findAll()) {
+            categories.add(category);
+        }
+        return categories;
     }
 
     /**
@@ -76,9 +81,6 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean exists(Category category) {
-        if (category.getId() == null) {
-            return false;
-        }
         return categoryRepository.exists(category.getId());
     }
 
@@ -88,7 +90,7 @@ class CategoryServiceImpl implements CategoryService {
     }
 }
 
-interface CategoryRepository extends MongoRepository<Category, String> {
+interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
 
     Category findByName(@Param("name") String name);
 }

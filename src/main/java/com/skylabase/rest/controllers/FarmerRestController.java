@@ -35,7 +35,7 @@ public class FarmerRestController {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	@ApiOperation(value = "Get a farmer", notes = "Returns a single farmer.")
-	public ResponseEntity<Farmer> getFarmer(@PathVariable("id") String id) {
+	public ResponseEntity<Farmer> getFarmer(@PathVariable("id") Long id) {
 		final Farmer farmer = farmerService.findById(id);
 		if (farmer == null) {
 			return new ResponseEntity<Farmer>(HttpStatus.NOT_FOUND);
@@ -52,7 +52,7 @@ public class FarmerRestController {
 		final Farmer created = farmerService.create(farmer);
 		return new ResponseEntity<Farmer>(created, HttpStatus.CREATED);
 	}
-	
+	/*
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	@ApiOperation(value = "Update farmer", notes = "Returns the updated farmer.")
 	public ResponseEntity<Farmer> updateFarmer(@PathVariable("id") String id, @RequestBody Farmer farmer) {
@@ -69,10 +69,10 @@ public class FarmerRestController {
 		farmerService.update(existing);
 		return new ResponseEntity<Farmer>(farmer, HttpStatus.OK);
 	}
-	
+	*/
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
 	@ApiOperation(value = "Delete farmer.")
-	public ResponseEntity<Farmer> deleteFarmer(@PathVariable("id") String id) {
+	public ResponseEntity<Farmer> deleteFarmer(@PathVariable("id") Long id) {
 		final Farmer farmer = farmerService.findById(id);
 		if (farmer == null) {
 			return new ResponseEntity<Farmer>(HttpStatus.NOT_FOUND);

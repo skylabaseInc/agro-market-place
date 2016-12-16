@@ -1,15 +1,14 @@
 package com.skylabase.service;
 
-import java.util.List;
-
+import com.skylabase.Authorized;
+import com.skylabase.model.PrivilegeConstants;
 import com.skylabase.model.User;
+import java.util.List;
 
 /**
  * Service that provides CRUD operations for {@link User}
  * 
  * @see User
- * 
- * @author ivange
  */
 public interface UserService {
 
@@ -19,7 +18,8 @@ public interface UserService {
 	 * @param id the id of the user to get
 	 * @return the user object if found else return null
 	 */
-	public User findById(String id);
+	@Authorized(PrivilegeConstants.GET_USERS)
+	public User findById(long id);
 	
 	/**
 	 * Find a user by username.
@@ -27,6 +27,7 @@ public interface UserService {
 	 * @param username the username of the user to find
 	 * @return the user if found else null
 	 */
+	@Authorized(PrivilegeConstants.GET_USERS)
 	public User findByUsername(String username);
 	
 	/**
@@ -34,6 +35,7 @@ public interface UserService {
 	 * 
 	 * @return list containing all users in the system
 	 */
+	@Authorized(PrivilegeConstants.GET_USERS)
 	public List<User> findAll();
 	
 	/**
@@ -42,6 +44,7 @@ public interface UserService {
 	 * @param user the user to create
 	 * @return the user created
 	 */
+	@Authorized(PrivilegeConstants.CREATE_USERS)
 	public User create(User user);
 	
 	/**
@@ -50,6 +53,7 @@ public interface UserService {
 	 * @param user to be updated
 	 * @return the updated user
 	 */
+	@Authorized(PrivilegeConstants.EDIT_USERS)
 	public User update(User user);
 	
 	/**
@@ -57,6 +61,7 @@ public interface UserService {
 	 * 
 	 * @param user the user to be deleted
 	 */
+	@Authorized(PrivilegeConstants.DELETE_USERS)
 	public void delete(User user);
 
 	/**
@@ -65,10 +70,12 @@ public interface UserService {
 	 * @param user the user been checked for existence
 	 * @return true if user exist else false
 	 */
+	@Authorized(PrivilegeConstants.VIEW_USERS)
 	public boolean exists(User user);
 
 	/**
 	 * Delete all users from the system.
 	 */
+	// TODO should be removed
 	public void deleteAll();
 }
