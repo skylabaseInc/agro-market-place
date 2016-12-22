@@ -48,11 +48,6 @@ class AddressServiceImpl implements AddressService {
 	public boolean exists(Address instance) {
 		return addressRepository.exists(instance.getId());
 	}
-
-	@Override
-	public void deleteAll() {
-		addressRepository.deleteAll();
-	}
 }
 
 interface AddressRepository extends PagingAndSortingRepository<Address, Long> {

@@ -48,11 +48,6 @@ class RoleServiceImpl implements RoleService{
     public boolean exists(Role instance) {
         return roleRepository.exists(instance.getId());
     }
-
-    @Override
-    public void deleteAll() {
-        roleRepository.deleteAll();
-    }
 }
 
 interface RoleRepository extends PagingAndSortingRepository<Role, Long> {}

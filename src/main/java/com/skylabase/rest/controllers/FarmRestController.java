@@ -123,19 +123,4 @@ public class FarmRestController {
 		farmService.delete(farm);
 		return new ResponseEntity<Farm>(HttpStatus.NO_CONTENT);
 	}
-
-	/**
-	 * Deletes all farms from the system
-	 * 
-	 * @return an HttpStatus.NO_CONTENT
-	 * 
-	 * @see FarmService#deleteAll()
-	 */
-	@RequestMapping(method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete all farms")
-	public ResponseEntity<Farm> deleteAllFarms() {
-		farmService.deleteAll();
-		return new ResponseEntity<Farm>(HttpStatus.NO_CONTENT);
-	}
-
 }

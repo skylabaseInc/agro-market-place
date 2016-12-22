@@ -56,9 +56,4 @@ public interface GenericService<T> {
 	 * @return true if element exists else return false
 	 */
 	public boolean exists(T instance);
-	
-	/**
-	 * Delete all Ts from the system.
-	 */
-	public void deleteAll();
 }

@@ -86,11 +86,4 @@ public class CategoryRestController {
         categoryService.delete(category);
         return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
     }
-
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ApiOperation(value = "Delete all categories")
-    public ResponseEntity<Category> deleteAllCategories() {
-        categoryService.deleteAll();
-        return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
-    }
 }

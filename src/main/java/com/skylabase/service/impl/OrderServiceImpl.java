@@ -82,14 +82,6 @@ class OrderServiceImpl implements OrderService {
     public boolean exists(Order instance) {
         return orderRepository.exists(instance.getId());
     }
-
-    /**
-     * Delete all Orders from the system.
-     */
-    @Override
-    public void deleteAll() {
-        orderRepository.deleteAll();
-    }
 }
 
 interface OrderRepository extends PagingAndSortingRepository<Order, Long> {

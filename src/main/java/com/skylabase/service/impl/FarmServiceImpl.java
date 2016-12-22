@@ -59,11 +59,6 @@ class FarmServiceImpl implements FarmService {
     public boolean exists(Farm farm) {
         return farmRepository.exists(farm.getId());
     }
-
-    @Override
-    public void deleteAll() {
-        farmRepository.deleteAll();
-    }
 }
 
 /**

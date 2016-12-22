@@ -125,17 +125,4 @@ public class OrderRestController {
         orderService.delete(order);
         return new ResponseEntity<Order>(HttpStatus.NO_CONTENT);
     }
-
-    /**
-     * Deletes all orders from the system
-     *
-     * @return an HttpStatus.NO_CONTENT
-     * @see OrderService#deleteAll()
-     */
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ApiOperation(value = "Delete all orders")
-    public ResponseEntity<Order> deleteAllOrders() {
-        orderService.deleteAll();
-        return new ResponseEntity<Order>(HttpStatus.NO_CONTENT);
-    }
 }

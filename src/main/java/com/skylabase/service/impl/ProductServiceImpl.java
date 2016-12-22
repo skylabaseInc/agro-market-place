@@ -84,14 +84,6 @@ class ProductServiceImpl implements ProductService {
     public boolean exists(Product instance) {
         return productRepository.exists(instance.getId());
     }
-
-    /**
-     * Delete all Products from the system.
-     */
-    @Override
-    public void deleteAll() {
-        productRepository.deleteAll();
-    }
 }
 
 interface ProductRepository extends PagingAndSortingRepository<Product, Long> {

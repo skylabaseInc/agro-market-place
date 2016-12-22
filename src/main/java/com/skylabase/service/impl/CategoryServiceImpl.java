@@ -83,11 +83,6 @@ class CategoryServiceImpl implements CategoryService {
     public boolean exists(Category category) {
         return categoryRepository.exists(category.getId());
     }
-
-    @Override
-    public void deleteAll() {
-        categoryRepository.deleteAll();
-    }
 }
 
 interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {

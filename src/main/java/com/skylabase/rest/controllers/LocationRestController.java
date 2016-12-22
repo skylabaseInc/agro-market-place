@@ -79,11 +79,4 @@ public class LocationRestController {
 		addressService.delete(location);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
-	
-	@RequestMapping(method=RequestMethod.DELETE)
-	@ApiOperation(value = "Delete all addresses")
-	public ResponseEntity<Void> deleteAllLocations() {
-		addressService.deleteAll();
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}
 }

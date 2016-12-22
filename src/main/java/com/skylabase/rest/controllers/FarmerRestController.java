@@ -80,11 +80,4 @@ public class FarmerRestController {
 		farmerService.delete(farmer);
 		return new ResponseEntity<Farmer>(HttpStatus.NO_CONTENT);
 	}
-	
-	@RequestMapping(method=RequestMethod.DELETE)
-	@ApiOperation(value = "Delete all farmers.")
-	public ResponseEntity<Farmer> deleteAllFarmers() {
-		farmerService.deleteAll();
-		return new ResponseEntity<Farmer>(HttpStatus.NO_CONTENT);
-	}
 }

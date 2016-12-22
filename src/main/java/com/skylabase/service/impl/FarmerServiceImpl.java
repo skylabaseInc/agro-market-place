@@ -52,11 +52,6 @@ class FarmerServiceImpl implements FarmerService {
 	public boolean exists(Farmer instance) {
 		return farmerRepository.exists(instance.getId());
 	}
-
-	@Override
-	public void deleteAll() {
-		farmerRepository.deleteAll();
-	}
 }
 
 interface FarmerRepository extends PagingAndSortingRepository<Farmer, Long> {

@@ -22,13 +22,8 @@ class UserServiceImpl implements UserService {
 
 
 	@Override
-	public User findById(long id) {
+	public User findById(Long id) {
 		return userRepository.findOne(id);
-	}
-
-	@Override
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
 	}
 
 	@Override
@@ -59,11 +54,6 @@ class UserServiceImpl implements UserService {
 	@Override
 	public boolean exists(User user) {
 		return userRepository.exists(user.getId());
-	}
-
-	@Override
-	public void deleteAll() {
-		// TODO will remove this in another issue
 	}
 }
 

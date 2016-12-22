@@ -78,11 +78,4 @@ public class ProductRestController {
         productService.delete(product);
         return new ResponseEntity<Product>(HttpStatus.NO_CONTENT);
     }
-
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ApiOperation(value = "Delete all products")
-    public ResponseEntity<Product> deleteAllProducts() {
-        productService.deleteAll();
-        return new ResponseEntity<Product>(HttpStatus.NO_CONTENT);
-    }
 }
