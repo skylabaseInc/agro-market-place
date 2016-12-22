@@ -1,8 +1,10 @@
 package com.skylabase.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Model class for system Roles
@@ -18,14 +20,14 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+    private List<User> users;
 
     @ManyToMany
     @JoinTable(name = "roles_privileges",
         joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id")
     )
-    private Collection<Privilege> privileges;
+    private List<Privilege> privileges;
 
     /**
      * Get the id of this {@code Role}
@@ -77,7 +79,7 @@ public class Role {
      *
      * @param users
      */
-    public void setUsers(Collection<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
@@ -86,7 +88,7 @@ public class Role {
      *
      * @return privileges
      */
-    public Collection<Privilege> getPrivileges() {
+    public List<Privilege> getPrivileges() {
         return privileges;
     }
 
@@ -95,7 +97,7 @@ public class Role {
      *
      * @param privileges the privileges to set
      */
-    public void setPrivileges(Collection<Privilege> privileges) {
+    public void setPrivileges(List<Privilege> privileges) {
         this.privileges = privileges;
     }
 
@@ -106,7 +108,7 @@ public class Role {
      */
     public void addPrivilege(Privilege privilege) {
         if (privileges == null) {
-            privileges = new HashSet<>();
+            privileges = new ArrayList<>();
         }
         if (privilege != null && !containsPrivilege(privilege)) {
             privileges.add(privilege);
