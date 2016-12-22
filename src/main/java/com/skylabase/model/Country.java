@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,5 +46,21 @@ public class Country {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
+
+    public City addCity(City city) {
+        if (cities == null) {
+            cities = new ArrayList<>();
+        }
+        cities.add(city);
+        return city;
     }
 }
