@@ -6,32 +6,44 @@ import com.skylabase.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Controller that handles requests to {@code Role} objects.
  */
 @RestController
 @Api("Roles")
-@RequestMapping(RoleRestController.ROLE_REQUEST_MAPPING)
-public class RoleRestController {
+@RequestMapping(RolesRestController.ROLE_REQUEST_MAPPING)
+public class RolesRestController {
 
     public static final String ROLE_REQUEST_MAPPING = "/api/v1/roles";
 
     @Autowired
     private RoleService roleService;
+
+    /**
+     * Create a new Role.
+     *
+     * @param role the role to create
+     * @return ResponseEntity containing the created role
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "Create a new Role.", notes = "Create a new Role and return the newly created Role.")
+    public ResponseEntity<Role> createRole(@RequestBody Role role) {
+        final Role savedRole = roleService.create(role);
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
+        return new ResponseEntity<>(savedRole, headers, HttpStatus.CREATED);
+    }
 
     /**
      * Get a list of roles from the system.
@@ -40,10 +52,13 @@ public class RoleRestController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Get roles", notes = "Returns a list of all roles in the system.")
-    public ResponseEntity<List<Role>> getRoles() {
-        final List<Role> roles = roleService.findAll();
+    public ResponseEntity<Page<Role>> getRoles(@RequestParam(value = "pageSize", defaultValue = "10") String pageSize,
+                                               @RequestParam(value = "pageNumber", defaultValue = "0") String pageNumber) {
+        int pgSize = Integer.valueOf(pageSize);
+        int pgNum = Integer.valueOf(pageNumber);
+        final Page<Role> roles = roleService.findAll(new PageRequest(pgNum, pgSize));
 
-        return new ResponseEntity<List<Role>>(roles, HttpStatus.OK);
+        return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     /**
@@ -57,27 +72,9 @@ public class RoleRestController {
     public ResponseEntity<Role> getRole(@PathVariable("id") Long id) {
         final Role role = roleService.findById(id);
         if (role == null) {
-            return new ResponseEntity<Role>(role, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(role, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Role>(role, HttpStatus.OK);
-    }
-
-    /**
-     * Create a new Role.
-     *
-     * @param role the role to create
-     * @return ResponseEntity containing the created role
-     */
-    @RequestMapping(method = RequestMethod.POST)
-    @ApiOperation(value = "Create a new Role.", notes = "Create a new Role and return the newly created Role.")
-    public ResponseEntity<Role> createRole(@RequestBody Role role) {
-        if (roleService.exists(role)) {
-            return new ResponseEntity<Role>(HttpStatus.CONFLICT);
-        }
-        final Role savedRole = roleService.create(role);
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
-        return new ResponseEntity<Role>(savedRole, headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -96,10 +93,10 @@ public class RoleRestController {
     public ResponseEntity<Role> deleteRole(@PathVariable("id") Long id) {
         final Role role = roleService.findById(id);
         if (role == null) {
-            return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        roleService.delete(role);
-        return new ResponseEntity<Role>(HttpStatus.OK);
+        roleService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -113,10 +110,10 @@ public class RoleRestController {
     public ResponseEntity<Collection<Privilege>> getAllRolePrivileges(@PathVariable("id") Long roleId) {
         final Role role = roleService.findById(roleId);
         if (role == null) {
-            return new ResponseEntity<Collection<Privilege>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         final Collection<Privilege> privileges = role.getPrivileges();
-        return new ResponseEntity<Collection<Privilege>>(privileges, HttpStatus.OK);
+        return new ResponseEntity<>(privileges, HttpStatus.OK);
     }
 
     /**
@@ -131,14 +128,14 @@ public class RoleRestController {
     public ResponseEntity<Privilege> getPrivilegeFromRole(@PathVariable("roleId") Long roleId, @PathVariable("id") Long privilegeId) {
         final Role role = roleService.findById(roleId);
         if (role == null) {
-            return new ResponseEntity<Privilege>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         for (Privilege privilege: role.getPrivileges()) {
             if (privilege.getId().equals(privilegeId)) {
-                return new ResponseEntity<Privilege>(privilege, HttpStatus.OK);
+                return new ResponseEntity<>(privilege, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<Privilege>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -153,11 +150,11 @@ public class RoleRestController {
     public ResponseEntity<Role> addPrivilege(@PathVariable("roleId") Long roleId, @RequestBody Privilege privilege) {
         final Role role = roleService.findById(roleId);
         if (role == null) {
-            return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         role.addPrivilege(privilege);
         roleService.update(role);
-        return new ResponseEntity<Role>(role, HttpStatus.OK);
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
     /**
@@ -172,15 +169,15 @@ public class RoleRestController {
     public ResponseEntity<Role> removePrivilege(@PathVariable("roleId") Long roleId, @PathVariable("id") Long privilegeId) {
         final Role role = roleService.findById(roleId);
         if (role == null) {
-            return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         final Privilege privilege = getPrivilege(role, privilegeId);
         if (privilege == null) {
-            return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         role.removePrivilege(privilege);
         roleService.update(role);
-        return new ResponseEntity<Role>(role, HttpStatus.OK);
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
     private Privilege getPrivilege(Role role, Long id) {
