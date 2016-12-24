@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 
 	@Column(name = "first_name")
@@ -29,8 +31,10 @@ public class User {
 	@Column(name = "last_name")
 	private String lastName;
 
+	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 
 	@Column(name = "phone_number")
@@ -45,7 +49,7 @@ public class User {
 			name = "users_roles",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	private List<Role> roles;
+	private Collection<Role> roles;
 
 	@OneToMany(mappedBy = "user")
 	private List<Order> orders;
@@ -106,11 +110,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public List<Role> getRoles() {
+	public Collection<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
 

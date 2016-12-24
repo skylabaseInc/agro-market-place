@@ -1,14 +1,15 @@
 package com.skylabase.service.impl;
 
+import com.skylabase.exceptions.ItemAlreadyExistsException;
+import com.skylabase.exceptions.ItemNotFoundException;
 import com.skylabase.model.Category;
 import com.skylabase.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * RestController for that handles requests {@link Category} objects
@@ -23,14 +24,39 @@ class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     /**
+     * Create a Category element.
+     *
+     * @param category the Category object to save.
+     * @return the category if succesfully saved.
+     */
+    @Override
+    public Category create(Category category) {
+        if (exists(category.getId())) {
+            throw new ItemAlreadyExistsException("cannot create already existing Category");
+        }
+        return categoryRepository.save(category);
+    }
+
+    /**
+     * Get all elements of type Category.
+     *
+     * @return the list of Category elements if found
+     * @param pageable
+     */
+    @Override
+    public Page<Category> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
+    }
+
+    /**
      * Get an element of type Category with given id.
      *
      * @param id the id of the element to get
      * @return the element if found
      */
     @Override
-    public Category findById(Long id) {
-        return categoryRepository.findOne(id);
+    public Category findById(long id) {
+        return categoryRepository.findById(id);
     }
 
     /**
@@ -40,52 +66,41 @@ class CategoryServiceImpl implements CategoryService {
      * @return the element if found
      */
     @Override
-    public Category findByName(String name) {
-        return categoryRepository.findByName(name);
+    public Page<Category> findByName(String name, Pageable pageable) {
+        return categoryRepository.findByNameLike(name, pageable);
     }
 
-    /**
-     * Get all elements of type Category.
-     *
-     * @return the list of Category elements if found
-     */
     @Override
-    public List<Category> findAll() {
-        final List<Category> categories = new ArrayList<>();
-        for (Category category: categoryRepository.findAll()) {
-            categories.add(category);
-        }
-        return categories;
-    }
-
-    /**
-     * Create a Category element.
-     *
-     * @param category the Category object to save.
-     * @return the category if succesfully saved.
-     */
-    @Override
-    public Category create(Category category) {
-        return categoryRepository.save(category);
+    public Page<Category> findByProductId(long productId, Pageable pageable) {
+        return categoryRepository.findByProductId(productId, pageable);
     }
 
     @Override
     public Category update(Category category) {
+        if (!exists(category.getId())) {
+            throw new ItemNotFoundException("cannot update a Category which does not exist");
+        }
         return create(category);
     }
 
     @Override
-    public void delete(Category category) {
-        categoryRepository.delete(category);
+    public void delete(long categoryId) {
+        categoryRepository.delete(categoryId);
     }
 
     @Override
-    public boolean exists(Category category) {
-        return categoryRepository.exists(category.getId());
+    public boolean exists(long categoryId) {
+        return categoryRepository.exists(categoryId);
     }
 }
 
 interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
 
-    Category findByName(@Param("name") String name);
+    Category findById(@Param("id") long id);
+
+    Page<Category> findByNameLike(@Param("name") String name, Pageable pageable);
+
+    Page<Category> findByName(@Param("name") String name, Pageable pageable);
+
+    Page<Category> findByProductId(@Param("product_id") long productId, Pageable pageable);
 }

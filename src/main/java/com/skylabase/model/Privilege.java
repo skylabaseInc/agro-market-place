@@ -1,7 +1,7 @@
 package com.skylabase.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Collection;
 
 @Entity
 @Table(name = "privileges")
@@ -14,7 +14,7 @@ public class Privilege {
     private String name;
 
     @ManyToMany(mappedBy = "privileges")
-    private List<Role> roles;
+    private Collection<Role> roles;
 
     public Long getId() {
         return id;
@@ -32,11 +32,11 @@ public class Privilege {
         this.name = name;
     }
 
-    public List<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 

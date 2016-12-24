@@ -1,6 +1,7 @@
 package com.skylabase.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Generic Service api that will be implemented by all services
@@ -23,8 +24,9 @@ public interface GenericService<T> {
 	 * Get all elements of type T in the system.
 	 * 
 	 * @return list of all elements found
+	 * @param pageable
 	 */
-	public List<T> findAll();
+	public Page<T> findAll(Pageable pageable);
 	
 	/**
 	 * Creates a new element of type T in the system
@@ -52,8 +54,13 @@ public interface GenericService<T> {
 	/**
 	 * Checks if element exists in the system.
 	 *
-	 * @param instance the element
+	 * @param farmerId the element
 	 * @return true if element exists else return false
 	 */
-	public boolean exists(T instance);
+	public boolean exists(long farmerId);
+	
+	/**
+	 * Delete all Ts from the system.
+	 */
+	public void deleteAll();
 }
