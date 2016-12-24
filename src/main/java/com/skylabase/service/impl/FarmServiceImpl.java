@@ -1,31 +1,15 @@
 package com.skylabase.service.impl;
 
-import com.skylabase.exceptions.ItemAlreadyExistsException;
-import com.skylabase.exceptions.ItemNotFoundException;
-import com.skylabase.model.Farm;
-import com.skylabase.service.FarmService;
-import com.skylabase.service.ProductService;
+import java.util.ArrayList;
+import java.util.List;
+import com.skylabase.model.User;
 import com.skylabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Service;
-
-/**
- * Repository used by UserRepositoryImpl to access database.
- */
-interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
-
-    Farm findById(@Param("farmId") long farmId);
-
-    Page<Farm> findByName(@Param("name") String name, Pageable pageable);
-
-    Page<Farm> findByNameLike(@Param("name") String name, Pageable pageable);
-
-    Page<Farm> findByOwnerId(@Param("ownerId") long ownerId, Pageable pageable);
-}
+import org.springframework.stereotype.Repository;
+import com.skylabase.model.Farm;
+import com.skylabase.service.FarmService;
 
 /**
  * RestController for that handles requests {@link Farm} objects
@@ -33,61 +17,53 @@ interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
  * @see Farm
  * @see FarmRepository
  */
-@Service
+@Repository
 class FarmServiceImpl implements FarmService {
 
     @Autowired
-    private FarmRepository farmDAO;
+    private FarmRepository farmRepository;
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private ProductService productService;
+    @Override
+    public Farm findById(Long id) {
+        return farmRepository.findOne(id);
+    }
 
     @Override
-    public boolean exists(long farmId) {
-        return farmDAO.exists(farmId);
+    public List<Farm> findAll() {
+        final List<Farm> farms = new ArrayList<>();
+        for (Farm farm: farmRepository.findAll()) {
+            farms.add(farm);
+        }
+        return farms;
     }
 
     @Override
     public Farm create(Farm farm) {
-        if (exists(farm.getId())) {
-            throw new ItemAlreadyExistsException("cannot create already existing Farm");
-        }
-        return farmDAO.save(farm);
-    }
-
-    @Override
-    public Farm findById(long id) {
-        return farmDAO.findById(id);
-    }
-
-    @Override
-    public Page<Farm> findAll(Pageable pageable) {
-        return farmDAO.findAll(pageable);
-    }
-
-    @Override
-    public Page<Farm> findByNameLike(String name, Pageable pageable) {
-        return farmDAO.findByNameLike(name, pageable);
-    }
-
-    @Override
-    public Page<Farm> findByOwnerId(long ownerId, Pageable pageable) {
-        return farmDAO.findByOwnerId(ownerId, pageable);
+        return farmRepository.save(farm);
     }
 
     @Override
     public Farm update(Farm farm) {
-        if (!exists(farm.getId())) {
-            throw new ItemNotFoundException("cannot update Farm which does not exist");
-        }
-        return farmDAO.save(farm);
+        return farmRepository.save(farm);
     }
 
     @Override
-    public void delete(long farmId) {
-        farmDAO.delete(farmId);
+    public void delete(Farm farm) {
+        farmRepository.delete(farm);
     }
+
+    @Override
+    public boolean exists(Farm farm) {
+        return farmRepository.exists(farm.getId());
+    }
+}
+
+/**
+ * Repository used by UserRepositoryImpl to access database.
+ */
+interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
+
 }

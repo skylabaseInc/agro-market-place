@@ -2,8 +2,11 @@ package com.skylabase;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
+import org.springframework.web.servlet.DispatcherServlet;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -14,17 +17,17 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class AgroMarketPlaceApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AgroMarketPlaceApplication.class, args);
-    }
-
-    @Bean
-    public Docket swaggerSettings() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build()
-                .pathMapping("/");
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(AgroMarketPlaceApplication.class, args);
+	}
+	
+	@Bean
+	public Docket swaggerSettings() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any())
+				.build()
+				.pathMapping("/");
+	}
 }
