@@ -21,7 +21,7 @@ public class PriceScale {
 
     @ManyToMany
     @JoinTable(name = "price_scales_products",
-            joinColumns = @JoinColumn(name = "price_scale_id", referencedColumnName = "id"),
+        joinColumns = @JoinColumn(name = "price_scale_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
     )
     private List<Product> products;

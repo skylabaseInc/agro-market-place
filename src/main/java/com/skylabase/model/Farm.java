@@ -14,70 +14,70 @@ import java.util.List;
 @Table(name = "farms")
 public class Farm {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    private String name;
+	private String name;
 
-    private String description;
+	private String description;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "address_id", referencedColumnName = "id")
+	private Address address;
 
-    @OneToMany(mappedBy = "farm")
-    private List<Product> products;
+	@OneToMany(mappedBy = "farm")
+	private List<Product> products;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private Farmer owner;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "owner_id", referencedColumnName = "id")
+	private Farmer owner;
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId(){
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public Address getAddress() {
-        return address;
-    }
+	public Address getAddress() {
+		return address;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public List<Product> getProducts() {
-        return products;
-    }
+	public List<Product> getProducts() {
+		return products;
+	}
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
 
-    public Farmer getOwner() {
-        return owner;
-    }
+	public Farmer getOwner() {
+		return owner;
+	}
 
-    public void setOwner(Farmer owner) {
-        this.owner = owner;
-    }
+	public void setOwner(Farmer owner) {
+		this.owner = owner;
+	}
 }
