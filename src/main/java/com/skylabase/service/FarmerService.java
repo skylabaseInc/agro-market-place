@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * Farmer specific Service api.
- * 
+ *
  * @author ivange
  */
 public interface FarmerService {
@@ -35,8 +35,8 @@ public interface FarmerService {
     /**
      * Get a list of all farmers from the system.
      *
-     * @return list containing all farmers in the system
      * @param pageable
+     * @return list containing all farmers in the system
      */
     @Authorized(PrivilegeConstants.GET_USERS)
     public Page<Farmer> findAll(Pageable pageable);

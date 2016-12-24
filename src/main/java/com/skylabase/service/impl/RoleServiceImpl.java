@@ -8,8 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
+interface RoleRepository extends PagingAndSortingRepository<Role, Long> {
+}
+
 @Service
-class RoleServiceImpl implements RoleService{
+class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
@@ -44,5 +47,3 @@ class RoleServiceImpl implements RoleService{
         return roleRepository.exists(roleId);
     }
 }
-
-interface RoleRepository extends PagingAndSortingRepository<Role, Long> {}

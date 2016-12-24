@@ -14,6 +14,20 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 /**
+ * Repository used by UserRepositoryImpl to access database.
+ */
+interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
+
+    Farm findById(@Param("farmId") long farmId);
+
+    Page<Farm> findByName(@Param("name") String name, Pageable pageable);
+
+    Page<Farm> findByNameLike(@Param("name") String name, Pageable pageable);
+
+    Page<Farm> findByOwnerId(@Param("ownerId") long ownerId, Pageable pageable);
+}
+
+/**
  * RestController for that handles requests {@link Farm} objects
  *
  * @see Farm
@@ -76,18 +90,4 @@ class FarmServiceImpl implements FarmService {
     public void delete(long farmId) {
         farmDAO.delete(farmId);
     }
-}
-
-/**
- * Repository used by UserRepositoryImpl to access database.
- */
-interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
-
-    Farm findById(@Param("farmId") long farmId);
-
-    Page<Farm> findByName(@Param("name") String name, Pageable pageable);
-
-    Page<Farm> findByNameLike(@Param("name") String name, Pageable pageable);
-
-    Page<Farm> findByOwnerId(@Param("ownerId") long ownerId, Pageable pageable);
 }

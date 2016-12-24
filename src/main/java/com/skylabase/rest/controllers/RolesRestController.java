@@ -119,7 +119,7 @@ public class RolesRestController {
     /**
      * Get a privilege from a particular Role.
      *
-     * @param roleId the role to get privilege from
+     * @param roleId      the role to get privilege from
      * @param privilegeId the privilege to get
      * @return
      */
@@ -130,7 +130,7 @@ public class RolesRestController {
         if (role == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        for (Privilege privilege: role.getPrivileges()) {
+        for (Privilege privilege : role.getPrivileges()) {
             if (privilege.getId().equals(privilegeId)) {
                 return new ResponseEntity<>(privilege, HttpStatus.OK);
             }
@@ -141,7 +141,7 @@ public class RolesRestController {
     /**
      * Add a privilege to a role.
      *
-     * @param roleId the role to add new privilege
+     * @param roleId    the role to add new privilege
      * @param privilege the privilege to add
      * @return the added Privilege
      */
@@ -160,7 +160,7 @@ public class RolesRestController {
     /**
      * Remove a privilege from a role.
      *
-     * @param roleId the role to remove privilege from
+     * @param roleId      the role to remove privilege from
      * @param privilegeId the privilege to remove
      * @return the updated role.
      */
@@ -181,7 +181,7 @@ public class RolesRestController {
     }
 
     private Privilege getPrivilege(Role role, Long id) {
-        for (Privilege privilege: role.getPrivileges()) {
+        for (Privilege privilege : role.getPrivileges()) {
             if (privilege.getId().equals(id))
                 return privilege;
         }

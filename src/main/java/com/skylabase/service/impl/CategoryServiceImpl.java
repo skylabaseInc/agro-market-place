@@ -11,6 +11,17 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
+
+    Category findById(@Param("id") long id);
+
+    Page<Category> findByNameLike(@Param("name") String name, Pageable pageable);
+
+    Page<Category> findByName(@Param("name") String name, Pageable pageable);
+
+    Page<Category> findByProductId(@Param("product_id") long productId, Pageable pageable);
+}
+
 /**
  * RestController for that handles requests {@link Category} objects
  *
@@ -40,8 +51,8 @@ class CategoryServiceImpl implements CategoryService {
     /**
      * Get all elements of type Category.
      *
-     * @return the list of Category elements if found
      * @param pageable
+     * @return the list of Category elements if found
      */
     @Override
     public Page<Category> findAll(Pageable pageable) {
@@ -92,15 +103,4 @@ class CategoryServiceImpl implements CategoryService {
     public boolean exists(long categoryId) {
         return categoryRepository.exists(categoryId);
     }
-}
-
-interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
-
-    Category findById(@Param("id") long id);
-
-    Page<Category> findByNameLike(@Param("name") String name, Pageable pageable);
-
-    Page<Category> findByName(@Param("name") String name, Pageable pageable);
-
-    Page<Category> findByProductId(@Param("product_id") long productId, Pageable pageable);
 }

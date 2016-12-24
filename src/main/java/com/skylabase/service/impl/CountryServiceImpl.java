@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
+interface CountryRepository extends PagingAndSortingRepository<Country, Long> {
+}
+
 @Service
 class CountryServiceImpl implements CountryService {
 
@@ -52,5 +55,3 @@ class CountryServiceImpl implements CountryService {
         return countryRepository.exists(countryId);
     }
 }
-
-interface CountryRepository extends PagingAndSortingRepository<Country, Long> {}

@@ -82,7 +82,7 @@ public class OrdersRestController {
     /**
      * Updates an existing order.
      *
-     * @param orderId      the orderId of the order been updated
+     * @param orderId the orderId of the order been updated
      * @param updated an updated instance to persist
      * @return the updated order or an HttpStatus.NOT_FOUND if the order been
      * updated does not exist

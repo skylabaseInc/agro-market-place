@@ -11,6 +11,17 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
+
+    Product findById(@Param("productId") long productId);
+
+    Page<Product> findByFarmId(@Param("farmId") long farmId, Pageable pageable);
+
+    Page<Product> findByNameLike(@Param("name") String name, Pageable pageable);
+
+    Page<Product> findAll(Pageable pageable);
+}
+
 @Service
 class ProductServiceImpl implements ProductService {
 
@@ -91,15 +102,4 @@ class ProductServiceImpl implements ProductService {
     public void delete(long productId) {
         productRepository.delete(productId);
     }
-}
-
-interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
-
-    Product findById(@Param("productId") long productId);
-
-    Page<Product> findByFarmId(@Param("farmId") long farmId, Pageable pageable);
-
-    Page<Product> findByNameLike(@Param("name") String name, Pageable pageable);
-
-    Page<Product> findAll(Pageable pageable);
 }

@@ -26,7 +26,7 @@ public class Order {
 
     @ManyToMany
     @JoinTable(name = "orders_products",
-        joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
     )
     private List<Product> products;

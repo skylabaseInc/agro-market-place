@@ -11,6 +11,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+interface OrderRepository extends PagingAndSortingRepository<Order, Long> {
+
+    Order findById(@Param("id") long id);
+
+    Page<Order> findByBuyerId(@Param("user_id") long buyerId, Pageable pageable);
+}
+
 @Service
 class OrderServiceImpl implements OrderService {
 
@@ -50,8 +57,8 @@ class OrderServiceImpl implements OrderService {
     /**
      * Get all elements of type Order in the system.
      *
-     * @return list of all elements found
      * @param pageable
+     * @return list of all elements found
      */
     @Override
     public Page<Order> findAll(Pageable pageable) {
@@ -92,11 +99,4 @@ class OrderServiceImpl implements OrderService {
     public boolean exists(long orderId) {
         return orderRepository.exists(orderId);
     }
-}
-
-interface OrderRepository extends PagingAndSortingRepository<Order, Long> {
-
-    Order findById(@Param("id") long id);
-
-    Page<Order> findByBuyerId(@Param("user_id") long buyerId, Pageable pageable);
 }

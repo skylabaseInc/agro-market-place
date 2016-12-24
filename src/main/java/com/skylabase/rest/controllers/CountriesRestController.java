@@ -21,10 +21,9 @@ import java.util.List;
 @RequestMapping(CountriesRestController.COUNTRY_REQUEST_MAPPING)
 public class CountriesRestController {
 
+    public static final String COUNTRY_REQUEST_MAPPING = "/api/v1/countries";
     @Autowired
     private CountryService countryService;
-
-    public static final String COUNTRY_REQUEST_MAPPING = "/api/v1/countries";
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<Country> createCountry(@RequestBody Country country) {

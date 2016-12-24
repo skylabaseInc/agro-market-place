@@ -16,30 +16,45 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+interface FarmerRepository extends PagingAndSortingRepository<Farmer, Long> {
+
+    Page<Farmer> findByUsernameLike(@Param("username") String username, Pageable pageable);
+
+    Page<Farmer> findByVoidedIsFalse(Pageable pageable);
+
+    Page<Farmer> findByVoidedIsTrue(Pageable pageable);
+
+    Farmer findById(@Param("farmerId") long farmerId);
+
+    Farmer findByEmail(@Param("email") String email);
+
+    Farmer findByUser(@Param("user") User user);
+}
+
 /**
  * Implementation of {@link FarmerService}
  */
 @Service
 class FarmerServiceImpl implements FarmerService {
 
-	@Autowired
-	private FarmerRepository farmerRepository;
+    @Autowired
+    private FarmerRepository farmerRepository;
 
     @Autowired
     private UserService userService;
 
-	@Override
-	public Farmer create(Farmer instance) {
+    @Override
+    public Farmer create(Farmer instance) {
         if (exists(instance.getId())) {
             throw new ItemAlreadyExistsException("a Farmer already exists with this id");
         }
-		return farmerRepository.save(instance);
-	}
-	
-	@Override
-	public Farmer findById(long id) {
-		return farmerRepository.findById(id);
-	}
+        return farmerRepository.save(instance);
+    }
+
+    @Override
+    public Farmer findById(long id) {
+        return farmerRepository.findById(id);
+    }
 
     @Override
     public Page<Farmer> findByUsername(String username, Pageable pageable) {
@@ -53,40 +68,25 @@ class FarmerServiceImpl implements FarmerService {
     }
 
     @Override
-	public Page<Farmer> findAll(Pageable pageable) {
-		return farmerRepository.findAll(pageable);
-	}
+    public Page<Farmer> findAll(Pageable pageable) {
+        return farmerRepository.findAll(pageable);
+    }
 
-	@Override
-	public Farmer update(Farmer instance) {
+    @Override
+    public Farmer update(Farmer instance) {
         if (!exists(instance.getId())) {
             throw new ItemNotFoundException("no Farmer with the given id");
         }
-		return farmerRepository.save(instance);
-	}
+        return farmerRepository.save(instance);
+    }
 
-	@Override
-	public void delete(long farmerId) {
-		farmerRepository.delete(farmerId);
-	}
+    @Override
+    public void delete(long farmerId) {
+        farmerRepository.delete(farmerId);
+    }
 
-	@Override
-	public boolean exists(long farmerId) {
-		return farmerRepository.exists(farmerId);
-	}
-}
-
-interface FarmerRepository extends PagingAndSortingRepository<Farmer, Long> {
-
-	Page<Farmer> findByUsernameLike(@Param("username") String username, Pageable pageable);
-
-	Page<Farmer> findByVoidedIsFalse(Pageable pageable);
-
-	Page<Farmer> findByVoidedIsTrue(Pageable pageable);
-
-	Farmer findById(@Param("farmerId") long farmerId);
-
-	Farmer findByEmail(@Param("email") String email);
-
-    Farmer findByUser(@Param("user") User user);
+    @Override
+    public boolean exists(long farmerId) {
+        return farmerRepository.exists(farmerId);
+    }
 }
