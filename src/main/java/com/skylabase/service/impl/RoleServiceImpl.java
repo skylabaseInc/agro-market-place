@@ -3,17 +3,24 @@ package com.skylabase.service.impl;
 import com.skylabase.model.Role;
 import com.skylabase.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+interface RoleRepository extends PagingAndSortingRepository<Role, Long> {
+}
 
 @Service
-class RoleServiceImpl implements RoleService{
+class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Override
+    public Role create(Role instance) {
+        return roleRepository.save(instance);
+    }
 
     @Override
     public Role findById(Long id) {
@@ -21,17 +28,8 @@ class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public List<Role> findAll() {
-        final List<Role> roles = new ArrayList<>();
-        for (Role role : roleRepository.findAll()) {
-            roles.add(role);
-        }
-        return roles;
-    }
-
-    @Override
-    public Role create(Role instance) {
-        return roleRepository.save(instance);
+    public Page<Role> findAll(Pageable pageable) {
+        return roleRepository.findAll(pageable);
     }
 
     @Override
@@ -40,14 +38,12 @@ class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public void delete(Role instance) {
-        roleRepository.delete(instance);
+    public void delete(Long roleId) {
+        roleRepository.delete(roleId);
     }
 
     @Override
-    public boolean exists(Role instance) {
-        return roleRepository.exists(instance.getId());
+    public boolean exists(Long roleId) {
+        return roleRepository.exists(roleId);
     }
 }
-
-interface RoleRepository extends PagingAndSortingRepository<Role, Long> {}

@@ -19,7 +19,7 @@ public class Farmer {
     private Long id;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     @OneToMany(mappedBy = "owner")
