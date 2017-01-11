@@ -44,7 +44,7 @@ public class CategoryRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get category", notes = "Returns a category.")
-    public ResponseEntity<Category> getCategoryById(@PathVariable("id") String id) {
+    public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
         Category category = categoryService.findById(id);
         if (category == null) {
             return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
@@ -62,6 +62,7 @@ public class CategoryRestController {
         return new ResponseEntity<Category>(created, HttpStatus.CREATED);
     }
 
+    /*
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "Update an existing category", notes = "Returns the updated category.")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") String id, @RequestBody Category category) {
@@ -74,22 +75,15 @@ public class CategoryRestController {
         categoryService.update(existing);
         return new ResponseEntity<Category>(category, HttpStatus.OK);
     }
-
+    */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Delete a category")
-    public ResponseEntity<Category> deleteCategory(@PathVariable("id") String id) {
+    public ResponseEntity<Category> deleteCategory(@PathVariable("id") Long id) {
         final Category category = categoryService.findById(id);
         if (category == null) {
             return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
         }
         categoryService.delete(category);
-        return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ApiOperation(value = "Delete all categories")
-    public ResponseEntity<Category> deleteAllCategories() {
-        categoryService.deleteAll();
         return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
     }
 }

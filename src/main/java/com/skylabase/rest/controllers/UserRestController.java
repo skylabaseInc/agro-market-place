@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,8 +24,6 @@ import io.swagger.annotations.ApiOperation;
  *
  * @see User
  * @see UserService
- * 
- * @author ivange
  */
 @RestController
 @RequestMapping("/users")
@@ -50,21 +47,6 @@ public class UserRestController {
 
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
-	
-	/**
-	 * Get a user with given username or 404 if user is not found.
-	 * 
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, params = {"username"})
-	@ApiOperation(value = "Get user", notes = "Returns user with give username")
-	public ResponseEntity<User> getUserByUsername(@RequestParam(value = "username", required = false) String username) {
-		final User result = userService.findByUsername(username);
-		if (result == null) {
-			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<User>(result, HttpStatus.OK);
-	}
 
 	/**
 	 * Get user with given user id.
@@ -72,12 +54,10 @@ public class UserRestController {
 	 * @param id
 	 *            the id of the user to return
 	 * @return the user of given id
-	 * 
-	 * @see UserService#findById(String)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a particular user", notes = "Returns a particular user.")
-	public ResponseEntity<User> getUser(@PathVariable("id") String id) {
+	public ResponseEntity<User> getUser(@PathVariable("id") long id) {
 		User user = userService.findById(id);
 		if (user == null) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -90,10 +70,7 @@ public class UserRestController {
 	 * 
 	 * @param user
 	 *            the user to be created
-	 * @param ucBuilder
 	 * @return an HttpStatus.CREATED if user was successfully created
-	 * 
-	 * @see UserService#create(User)
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create a new user", notes = "Returns the created user.")
@@ -117,12 +94,10 @@ public class UserRestController {
 	 *            an updated instance to persist
 	 * @return the updated user or an HttpStatus.NOT_FOUND if the user been
 	 *         updated does not exist
-	 * 
-	 * @see UserService#update(User)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update an existing user", notes = "Returns the created user.")
-	public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User updated) {
+	public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User updated) {
 		User currentUser = userService.findById(id);
 
 		if (currentUser == null) {
@@ -132,7 +107,6 @@ public class UserRestController {
 		currentUser.setUsername(updated.getUsername());
 		currentUser.setPhoneNumber(updated.getPhoneNumber());
 		currentUser.setEmail(updated.getEmail());
-		currentUser.setLocationId(updated.getLocationId());
 		userService.update(currentUser);
 		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 	}
@@ -144,32 +118,16 @@ public class UserRestController {
 	 *            the id of the user been deleted
 	 * @return if user was not found an HttpStatus.NOT_FOUND is returned else an
 	 *         HttpStatus.NO_CONTENT is returned
-	 * 
-	 * @see UserService#delete(User)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a user")
-	public ResponseEntity<User> deleteUser(@PathVariable("id") String id) {
+	public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
 		User user = userService.findById(id);
 		if (user == null) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 
 		userService.delete(user);
-		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
-	}
-
-	/**
-	 * Deletes all users from the system
-	 * 
-	 * @return an HttpStatus.NO_CONTENT
-	 * 
-	 * @see UserService#deleteAll()
-	 */
-	@RequestMapping(method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete all users")
-	public ResponseEntity<User> deleteAllUsers() {
-		userService.deleteAll();
 		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 	}
 }

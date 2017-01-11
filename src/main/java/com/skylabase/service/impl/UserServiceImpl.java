@@ -1,19 +1,18 @@
 package com.skylabase.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.skylabase.model.User;
 import com.skylabase.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Implementation of {@link UserService}
- * 
- * @author ivange
  */
 @Service
 class UserServiceImpl implements UserService {
@@ -21,14 +20,20 @@ class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+
 	@Override
-	public User findById(String id) {
+	public User findById(Long id) {
 		return userRepository.findOne(id);
 	}
 
 	@Override
 	public List<User> findAll() {
-		return userRepository.findAll();
+		final Iterable<User> users = userRepository.findAll();
+		final List<User> listOfUsers = new ArrayList<>();
+		for (User user: users) {
+			listOfUsers.add(user);
+		}
+		return listOfUsers;
 	}
 
 	@Override
@@ -38,7 +43,7 @@ class UserServiceImpl implements UserService {
 
 	@Override
 	public User update(User user) {
-		return create(user);
+		return userRepository.save(user);
 	}
 
 	@Override
@@ -48,26 +53,14 @@ class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean exists(User user) {
-		if (user.getId() == null)
-			return false;
 		return userRepository.exists(user.getId());
-	}
-
-	@Override
-	public void deleteAll() {
-		userRepository.deleteAll();
-	}
-
-	@Override
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
 	}
 }
 
 /**
  * Repository used by UserService to access database.
  */
-interface UserRepository extends MongoRepository<User, String> {
+interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
 	User findByUsername(@Param("username") String username);
 }

@@ -50,11 +50,11 @@ public class OrderRestController {
      *
      * @param id the id of the order to return
      * @return the order of given id
-     * @see OrderService#findById(String)
+     * @see OrderService#findById(Long)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get order", notes = "Returns an order.")
-    public ResponseEntity<Order> getOrder(@PathVariable("id") String id) {
+    public ResponseEntity<Order> getOrder(@PathVariable("id") Long id) {
         Order order = orderService.findById(id);
         if (order == null) {
             return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
@@ -89,6 +89,7 @@ public class OrderRestController {
      * @return the updated order or an HttpStatus.NOT_FOUND if the order been
      * updated does not exist
      */
+    /*
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "Update an existing order", notes = "Returns the updated order.")
     public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody Order updated) {
@@ -105,7 +106,7 @@ public class OrderRestController {
         orderService.update(currentOrder);
         return new ResponseEntity<Order>(currentOrder, HttpStatus.OK);
     }
-
+    */
     /**
      * Deletes a order from the system.
      *
@@ -115,26 +116,13 @@ public class OrderRestController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Delete an order")
-    public ResponseEntity<Order> deleteOrder(@PathVariable("id") String id) {
+    public ResponseEntity<Order> deleteOrder(@PathVariable("id") Long id) {
         Order order = orderService.findById(id);
         if (order == null) {
             return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
         }
 
         orderService.delete(order);
-        return new ResponseEntity<Order>(HttpStatus.NO_CONTENT);
-    }
-
-    /**
-     * Deletes all orders from the system
-     *
-     * @return an HttpStatus.NO_CONTENT
-     * @see OrderService#deleteAll()
-     */
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ApiOperation(value = "Delete all orders")
-    public ResponseEntity<Order> deleteAllOrders() {
-        orderService.deleteAll();
         return new ResponseEntity<Order>(HttpStatus.NO_CONTENT);
     }
 }

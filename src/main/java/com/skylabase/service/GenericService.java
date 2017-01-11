@@ -17,7 +17,7 @@ public interface GenericService<T> {
 	 * @param id the id of the element to get
 	 * @return the element if found
 	 */
-	public T findById(String id);
+	public T findById(Long id);
 	
 	/**
 	 * Get all elements of type T in the system.
@@ -56,9 +56,4 @@ public interface GenericService<T> {
 	 * @return true if element exists else return false
 	 */
 	public boolean exists(T instance);
-	
-	/**
-	 * Delete all Ts from the system.
-	 */
-	public void deleteAll();
 }

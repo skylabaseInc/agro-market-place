@@ -2,12 +2,11 @@ package com.skylabase.service.impl;
 
 import com.skylabase.model.Order;
 import com.skylabase.service.OrderService;
-import com.skylabase.service.ProductService;
-import com.skylabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,20 +15,6 @@ class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ProductService productService;
-
-    private boolean buyerIdExists(String buyerId) {
-        return userService.findById(buyerId) != null;
-    }
-
-    private boolean productIdExists(String productId) {
-        return productService.findById(productId) != null;
-    }
-
     /**
      * Get an element of type Order with given id.
      *
@@ -37,7 +22,7 @@ class OrderServiceImpl implements OrderService {
      * @return the element if found
      */
     @Override
-    public Order findById(String id) {
+    public Order findById(Long id) {
         return orderRepository.findOne(id);
     }
 
@@ -48,7 +33,11 @@ class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<Order> findAll() {
-        return orderRepository.findAll();
+        final List<Order> orders = new ArrayList<>();
+        for (Order order: orderRepository.findAll()) {
+            orders.add(order);
+        }
+        return orders;
     }
 
     /**
@@ -59,18 +48,6 @@ class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order create(Order instance) {
-        if (exists(instance)) {
-            // TODO should throw exception: Already Exists
-            return null;
-        }
-        if (!buyerIdExists(instance.getBuyerId())) {
-            // TODO should throw exception: No such Buyer
-            return null;
-        }
-        if (!productIdExists(instance.getProductId())) {
-            // TODO should throw exception: No such product
-            return null;
-        }
         return orderRepository.save(instance);
     }
 
@@ -82,14 +59,6 @@ class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order update(Order instance) {
-        if (!buyerIdExists(instance.getBuyerId())) {
-            // TODO should throw exception: No such Buyer
-            return null;
-        }
-        if (!productIdExists(instance.getProductId())) {
-            // TODO should throw exception: No such product
-            return null;
-        }
         return orderRepository.save(instance);
     }
 
@@ -111,20 +80,9 @@ class OrderServiceImpl implements OrderService {
      */
     @Override
     public boolean exists(Order instance) {
-        if (instance.getId() == null) {
-            return false;
-        }
         return orderRepository.exists(instance.getId());
-    }
-
-    /**
-     * Delete all Orders from the system.
-     */
-    @Override
-    public void deleteAll() {
-        orderRepository.deleteAll();
     }
 }
 
-interface OrderRepository extends MongoRepository<Order, String> {
+interface OrderRepository extends PagingAndSortingRepository<Order, Long> {
 }

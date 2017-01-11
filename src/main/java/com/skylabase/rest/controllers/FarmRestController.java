@@ -35,11 +35,11 @@ public class FarmRestController {
 	 *            the id of the farm to return
 	 * @return the farm of given id
 	 * 
-	 * @see FarmService#findById(String)
+	 * @see FarmService#findById(Long)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get farm by id", notes = "Returns a farm")
-	public ResponseEntity<Farm> getFarm(@PathVariable("id") String id) {
+	public ResponseEntity<Farm> getFarm(@PathVariable("id") Long id) {
 		final Farm farm = farmService.findById(id);
 		if (farm == null) {
 			return new ResponseEntity<Farm>(HttpStatus.NOT_FOUND);
@@ -49,18 +49,8 @@ public class FarmRestController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Search farms by owner", notes = "Returns a list of farms belonging to owner")
-	public ResponseEntity<List<Farm>> getFarms(@RequestParam(value = "ownerId", required = false) String ownerId) {
-		List<Farm> farms= null;
-		
-		if (ownerId == null) {
-			farms = farmService.findAll();
-		}
-		else {
-			farms = farmService.findByOwnerId(ownerId);
-		}
-		if (farms == null) {
-			return new ResponseEntity<List<Farm>>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<List<Farm>> getFarms(@RequestParam(value = "ownerId", required = false) Long ownerId) {
+		final List<Farm> farms = farmService.findAll();
 		return new ResponseEntity<List<Farm>>(farms, HttpStatus.OK);
 	}
 
@@ -69,9 +59,7 @@ public class FarmRestController {
 	 * 
 	 * @param farm
 	 *            the farm to be created
-	 * @return an HttpStatus.CREATED if farm was successfully created
-	 * 
-	 * @see FarmService#create(Farm)
+	 * @return an HttpStatus.CREATED if farm was successfully create
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create a new farm", notes = "Returns the created farm")
@@ -97,10 +85,10 @@ public class FarmRestController {
 	 *         updated does not exist
 	 * 
 	 * @see FarmService#update(Farm)
-	 */
+	 *//*
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update an existing farm", notes = "Returns the updated farm.")
-	public ResponseEntity<Farm> updateFarm(@PathVariable("id") String id, @RequestBody Farm updated) {
+	public ResponseEntity<Farm> updateFarm(@PathVariable("id") Long id, @RequestBody Farm updated) {
 		Farm currentFarm = farmService.findById(id);
 
 		if (currentFarm == null) {
@@ -115,7 +103,7 @@ public class FarmRestController {
 
 		return new ResponseEntity<Farm>(currentFarm, HttpStatus.OK);
 	}
-
+    */
 	/**
 	 * Deletes a farm from the system.
 	 * 
@@ -123,12 +111,10 @@ public class FarmRestController {
 	 *            the id of the farm been deleted
 	 * @return if farm was not found an HttpStatus.NOT_FOUND is returned else an
 	 *         HttpStatus.NO_CONTENT is returned
-	 * 
-	 * @see FarmService#delete(Farm)
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a farm")
-	public ResponseEntity<Farm> deleteFarm(@PathVariable("id") String id) {
+	public ResponseEntity<Farm> deleteFarm(@PathVariable("id") Long id) {
 		Farm farm = farmService.findById(id);
 		if (farm == null) {
 			return new ResponseEntity<Farm>(HttpStatus.NOT_FOUND);
@@ -137,19 +123,4 @@ public class FarmRestController {
 		farmService.delete(farm);
 		return new ResponseEntity<Farm>(HttpStatus.NO_CONTENT);
 	}
-
-	/**
-	 * Deletes all farms from the system
-	 * 
-	 * @return an HttpStatus.NO_CONTENT
-	 * 
-	 * @see FarmService#deleteAll()
-	 */
-	@RequestMapping(method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete all farms")
-	public ResponseEntity<Farm> deleteAllFarms() {
-		farmService.deleteAll();
-		return new ResponseEntity<Farm>(HttpStatus.NO_CONTENT);
-	}
-
 }

@@ -4,13 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "cities")
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,8 +18,9 @@ public class Category {
 
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<Product> products;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
+    private Country country;
 
     public Long getId() {
         return id;
@@ -37,11 +38,11 @@ public class Category {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }

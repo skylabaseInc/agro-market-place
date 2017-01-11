@@ -2,30 +2,26 @@ package com.skylabase.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "price_scales")
+public class PriceScale {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private String scale;
 
     @ManyToMany
-    @JoinTable(name = "orders_products",
-        joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+    @JoinTable(name = "price_scales_products",
+        joinColumns = @JoinColumn(name = "price_scale_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
     )
     private List<Product> products;
@@ -38,12 +34,12 @@ public class Order {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getScale() {
+        return scale;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setScale(String scale) {
+        this.scale = scale;
     }
 
     public List<Product> getProducts() {

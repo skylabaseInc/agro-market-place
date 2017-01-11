@@ -1,24 +1,50 @@
 package com.skylabase.model;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.List;
 
+@Entity
+@Table(name = "products")
 public class Product {
 
     @Id
-    private String id;
-    private String name;
-    private String farmId;
-    private List<String> categoryIds;
-    private String descritpion;
-    private String imagePath;
-    private int quantity;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public String getId() {
+    private String name;
+
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "farm_id", referencedColumnName = "id")
+    private Farm farm;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Order> orders;
+
+    @ManyToMany(mappedBy = "products")
+    private List<PriceScale> priceScales;
+
+    @ManyToMany
+    @JoinTable(name = "product_categories",
+        joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+    )
+    private List<Category> categories;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -30,43 +56,43 @@ public class Product {
         this.name = name;
     }
 
-    public String getFarmId() {
-        return farmId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFarmId(String farmId) {
-        this.farmId = farmId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public List<String> getCategoryIds() {
-        return categoryIds;
+    public Farm getFarm() {
+        return farm;
     }
 
-    public void setCategoryIds(List<String> categoryIds) {
-        this.categoryIds = categoryIds;
+    public void setFarm(Farm farm) {
+        this.farm = farm;
     }
 
-    public String getDescritpion() {
-        return descritpion;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setDescritpion(String descritpion) {
-        this.descritpion = descritpion;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public List<PriceScale> getPriceScales() {
+        return priceScales;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setPriceScales(List<PriceScale> priceScales) {
+        this.priceScales = priceScales;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
