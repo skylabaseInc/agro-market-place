@@ -31,7 +31,7 @@ public class Farm {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "owner_id", referencedColumnName = "id")
-	private Farmer owner;
+	private User owner;
 
 	public Long getId(){
 		return id;
@@ -73,11 +73,11 @@ public class Farm {
 		this.products = products;
 	}
 
-	public Farmer getOwner() {
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Farmer owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 }
