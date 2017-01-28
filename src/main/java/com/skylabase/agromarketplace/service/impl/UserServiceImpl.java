@@ -3,10 +3,12 @@ package com.skylabase.agromarketplace.service.impl;
 import com.skylabase.agromarketplace.model.User;
 import com.skylabase.agromarketplace.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
  * Implementation of {@link UserService}
  */
 @Service
+@Transactional
 class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -26,13 +29,17 @@ class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Page<User> listAllByPage(Pageable pageable) {
+		return userRepository.findAll(pageable);
+	}
+
+	@Override
 	public List<User> findAll() {
-		final Iterable<User> users = userRepository.findAll();
-		final List<User> listOfUsers = new ArrayList<>();
-		for (User user: users) {
-			listOfUsers.add(user);
+		final List<User> users = new ArrayList<>();
+		for (User user: userRepository.findAll()) {
+			users.add(user);
 		}
-		return listOfUsers;
+		return users;
 	}
 
 	@Override
@@ -61,6 +68,5 @@ class UserServiceImpl implements UserService {
  */
 interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-	User findByUsername(@Param("username") String username);
 }
 
