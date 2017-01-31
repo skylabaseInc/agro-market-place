@@ -1,6 +1,7 @@
-package com.skylabase.agromarketplace.model;
+package com.skylabase.agromarketplace.model.property.editors;
 
-import com.skylabase.agromarketplace.service.CountryService;
+import com.skylabase.agromarketplace.model.User;
+import com.skylabase.agromarketplace.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -8,26 +9,26 @@ import org.springframework.util.StringUtils;
 import java.beans.PropertyEditorSupport;
 
 @Component
-public class CountryPropertyEditor extends PropertyEditorSupport {
+public class UserPropertyEditor extends PropertyEditorSupport {
 
     @Autowired
-    private CountryService countryService;
+    private UserService userService;
 
     @Override
     public String getAsText() {
-        final Country country = (Country) getValue();
-        if (country == null) {
+        final User user = (User) getValue();
+        if (user == null) {
             return "";
         }
         else {
-            return country.getId().toString();
+            return user.getId().toString();
         }
     }
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
         if (StringUtils.hasText(text)) {
-            setValue(countryService.findById(Long.valueOf(text)));
+            setValue(userService.findById(Long.valueOf(text)));
         }
         else {
             setValue(null);
