@@ -75,10 +75,6 @@ public class UserRestController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create a new user", notes = "Returns the created user.")
 	public ResponseEntity<User> createUser(@RequestBody User user) {
-		if (userService.exists(user)) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
-
 		userService.create(user);
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
