@@ -3,6 +3,8 @@ package com.skylabase.agromarketplace.service.impl;
 import com.skylabase.agromarketplace.service.CountryService;
 import com.skylabase.agromarketplace.model.Country;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +49,11 @@ class CountryServiceImpl implements CountryService {
     @Override
     public boolean exists(Country instance) {
         return countryRepository.exists(instance.getId());
+    }
+
+    @Override
+    public Page<Country> listAllByPage(Pageable pageable) {
+        return countryRepository.findAll(pageable);
     }
 }
 
