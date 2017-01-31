@@ -1,10 +1,11 @@
 package com.skylabase.agromarketplace.rest.controllers;
 
-import com.skylabase.agromarketplace.model.City;
 import com.skylabase.agromarketplace.service.CountryService;
 import com.skylabase.agromarketplace.model.Country;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,64 +29,71 @@ public class CountryRestController {
 
     public static final String COUNTRY_REQUEST_MAPPING = "/api/v1/countries";
 
+    /**
+     * Get all countries from the system.
+     *
+     * @param pageable a pageable object that provides pagination information
+     * @return paginated list of countries
+     */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Country>> getAllCountries() {
-        final List<Country> countries = countryService.findAll();
-        return new ResponseEntity<List<Country>>(countries, HttpStatus.OK);
+    public ResponseEntity<Page<Country>> getAllCountries(Pageable pageable) {
+       final Page<Country> countries = countryService.listAllByPage(pageable);
+       if (countries == null) {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       return new ResponseEntity<>(countries, HttpStatus.OK);
     }
 
+    /**
+     * Get a particular country
+     *
+     * @param country the country to get
+     * @return country
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Country> getCountry(@PathVariable("id") Long id) {
-        final Country country = countryService.findById(id);
+    public ResponseEntity<Country> getCountry(@PathVariable("id") Country country) {
         if (country == null) {
-            return new ResponseEntity<Country>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Country>(country, HttpStatus.OK);
+        return new ResponseEntity<>(country, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    /**
+     * Create a new country.
+     *
+     * @param country the country to create
+     * @return the created country
+     */
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Country> createCountry(@RequestBody Country country) {
-        if (countryService.exists(country)) {
-            return new ResponseEntity<Country>(HttpStatus.CONFLICT);
-        }
         final Country savedCountry = countryService.create(country);
         final HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ServletUriComponentsBuilder.fromCurrentRequest().path("/").buildAndExpand("").toUri());
-        return new ResponseEntity<Country>(savedCountry, headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedCountry, headers, HttpStatus.CREATED);
     }
 
+    /**
+     * Update an existing country
+     * @return the country to be updated
+     * @throws OperationNotSupportedException
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Country> updateCountry() throws OperationNotSupportedException {
         throw new OperationNotSupportedException("Update on country not yet supported.");
     }
 
+    /**
+     * Delete a given country
+     *
+     * @param country the country to delete
+     * @return
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Country> deleteCountry(@PathVariable("id") Long id) {
-        final Country country = countryService.findById(id);
+    public ResponseEntity<Void> deleteCountry(@PathVariable("id") Country country) {
         if (country == null) {
-            return new ResponseEntity<Country>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         countryService.delete(country);
-        return new ResponseEntity<Country>(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "{countryId}/cities", method = RequestMethod.GET)
-    public ResponseEntity<List<City>> getCities(@PathVariable("id") Long countryId) {
-        final Country country = countryService.findById(countryId);
-        if (country == null) {
-            return new ResponseEntity<List<City>>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<List<City>>(country.getCities(), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "{countryId}/cities", method = RequestMethod.POST)
-    public ResponseEntity<Country> addCity(@PathVariable("id") Long countryId, @RequestBody City city) {
-        final Country country = countryService.findById(countryId);
-        if (country == null) {
-            return new ResponseEntity<Country>(HttpStatus.NOT_FOUND);
-        }
-        country.addCity(city);
-        countryService.update(country);
-        return new ResponseEntity<Country>(country, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
