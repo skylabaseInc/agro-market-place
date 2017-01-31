@@ -52,14 +52,13 @@ public class UserRestController {
 	/**
 	 * Get user with given user id.
 	 *
-	 * @param id
+	 * @param user the user to get
 	 *            the id of the user to return
 	 * @return the user of given id
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a particular user", notes = "Returns a particular user.")
-	public ResponseEntity<User> getUser(@PathVariable("id") long id) {
-		final User user = userService.findById(id);
+	public ResponseEntity<User> getUser(@PathVariable("id") User user) {
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -89,7 +88,7 @@ public class UserRestController {
 	/**
 	 * Updates an existing user.
 	 *
-	 * @param id
+	 * @param currentUser the user been updated
 	 *            the id of the user been updated
 	 * @param updated
 	 *            an updated instance to persist
@@ -98,9 +97,7 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update an existing user", notes = "Returns the created user.")
-	public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User updated) {
-		final User currentUser = userService.findById(id);
-
+	public ResponseEntity<User> updateUser(@PathVariable("id") User currentUser, @RequestBody User updated) {
 		if (currentUser == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -115,15 +112,14 @@ public class UserRestController {
 	/**
 	 * Deletes a user from the system.
 	 *
-	 * @param id
+	 * @param user the user to be deleted
 	 *            the id of the user been deleted
 	 * @return if user was not found an HttpStatus.NOT_FOUND is returned else an
 	 *         HttpStatus.NO_CONTENT is returned
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a user")
-	public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
-		final User user = userService.findById(id);
+	public ResponseEntity<User> deleteUser(@PathVariable("id") User user) {
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
