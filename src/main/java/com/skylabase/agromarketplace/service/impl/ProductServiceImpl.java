@@ -3,13 +3,17 @@ package com.skylabase.agromarketplace.service.impl;
 import com.skylabase.agromarketplace.model.Product;
 import com.skylabase.agromarketplace.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -81,6 +85,11 @@ class ProductServiceImpl implements ProductService {
     @Override
     public boolean exists(Product instance) {
         return productRepository.exists(instance.getId());
+    }
+
+    @Override
+    public Page<Product> listAllByPage(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 }
 

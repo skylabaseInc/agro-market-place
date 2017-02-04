@@ -1,10 +1,10 @@
 package com.skylabase.agromarketplace.rest.controllers;
 
-import java.util.List;
-
 import com.skylabase.agromarketplace.model.Product;
 import com.skylabase.agromarketplace.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import javax.naming.OperationNotSupportedException;
+
 @RestController
-@RequestMapping(value = "/products")
+@RequestMapping(value = "/api/v1/products")
 @Api(value = "Product")
 public class ProductRestController {
 
@@ -26,18 +28,17 @@ public class ProductRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Get products", notes = "Returns a list of all products.")
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> returnValue = productService.findAll();
-        if (returnValue == null) {
+    public ResponseEntity<Page<Product>> getProducts(Pageable pageable) {
+        final Page<Product> products = productService.listAllByPage(pageable);
+        if (products == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(returnValue, HttpStatus.OK);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get product", notes = "Returns a product.")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
-        Product product = productService.findById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Product product) {
         if (product == null) {
             return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
         }
@@ -56,25 +57,18 @@ public class ProductRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "Update an existing product", notes = "Returns the updated product.")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-        final Product existing = productService.findById(id);
-        if (existing == null) {
-            return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
-        }
-        existing.setName(product.getName());
-
-        productService.update(existing);
-        return new ResponseEntity<Product>(product, HttpStatus.OK);
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Product existing, @RequestBody Product product)
+            throws  Exception {
+       throw new OperationNotSupportedException("");
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Delete a product")
-    public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
-        final Product product = productService.findById(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Product product) {
         if (product == null) {
-            return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         productService.delete(product);
-        return new ResponseEntity<Product>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
