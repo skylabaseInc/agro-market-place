@@ -3,13 +3,17 @@ package com.skylabase.agromarketplace.service.impl;
 import com.skylabase.agromarketplace.model.Role;
 import com.skylabase.agromarketplace.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 class RoleServiceImpl implements RoleService {
 
     @Autowired
@@ -47,6 +51,11 @@ class RoleServiceImpl implements RoleService {
     @Override
     public boolean exists(Role instance) {
         return roleRepository.exists(instance.getId());
+    }
+
+    @Override
+    public Page<Role> listAllByPage(Pageable pageable) {
+        return roleRepository.findAll(pageable);
     }
 }
 
