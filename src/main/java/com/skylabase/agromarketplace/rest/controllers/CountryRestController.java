@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.naming.OperationNotSupportedException;
-import java.util.List;
 
 @RestController
 @Api("Country")
